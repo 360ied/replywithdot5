@@ -35,7 +35,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         async with session.get(
                 f"https://api.wolframalpha.com/v1/simple?i={query}&width=800&appid={getenv('WOLFRAM_ALPHA_APP_ID')}"
         ) as response:
-            if await response.text() == "Wolfram|Alpha did not understand your input":
+            if await response.text(errors="ignore") == "Wolfram|Alpha did not understand your input":
                 await message.channel.send("Wolfram|Alpha did not understand your input")
             else:
                 file = BytesIO(await response.read())
