@@ -1,9 +1,6 @@
 """Searches up Meanings on Wiktionary"""
-from io import BytesIO
-from os import getenv
 from urllib import parse
 
-import aiohttp
 import discord
 
 from utility import wordnetasync

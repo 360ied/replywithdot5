@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 async def _get_soup_object(url, parser="html.parser"):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
-            return BeautifulSoup(await response.read(), parser=parser)
+            return BeautifulSoup(await response.read(), features=parser)
 
 
 async def synonym(term, formatted=False):
