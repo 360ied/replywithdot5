@@ -6,9 +6,7 @@ description = __doc__
 
 aliases = dict()
 
-accepted_parameters = list()
-
-required_parameters = list()
+required_parameters = set()
 
 required_permissions = set()
 
