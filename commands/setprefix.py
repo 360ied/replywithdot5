@@ -17,7 +17,9 @@ required_permissions = {
     "manage_guild"
 }
 
-expected_positional_parameters = list()
+expected_positional_parameters = [
+    "prefix"
+]
 
 
 async def run(client: discord.Client, group, message: discord.Message, args: dict) -> None:
