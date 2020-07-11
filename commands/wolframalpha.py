@@ -8,10 +8,7 @@ import discord
 
 description = __doc__
 
-usage = "{prefix}wolfram --q (query)\n" \
-        "or\n" \
-        "{prefix}wolfram (query)\n" \
-        "for a query without spaces"
+usage = "{prefix}wolfram (query)"
 
 aliases = {
     "query": "query",
