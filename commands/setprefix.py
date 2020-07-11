@@ -7,7 +7,9 @@ description = __doc__
 
 usage = "{prefix}ping"
 
-aliases = dict()
+aliases = {
+    "prefix": "prefix",
+}
 
 required_parameters = {
     "prefix"
