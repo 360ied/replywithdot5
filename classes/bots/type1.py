@@ -3,7 +3,7 @@ from os import environ
 import discord
 
 from classes.bot import Bot
-from commands import ping
+from commands import ping, setprefix
 from tasks.on_connect import status, persistentstorageautoupdate
 # from actions.on_message import
 from utility import blib
@@ -87,7 +87,10 @@ class Type1(Bot):
         default_prefix = ","
 
         command_dict = {
-            "ping": ping
+            "ping": ping,
+            "prefix": setprefix,
+            "setprefix": setprefix,
+            "changeprefix": setprefix
         }
 
         actions_dict = {
