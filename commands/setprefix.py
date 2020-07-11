@@ -5,7 +5,7 @@ from utility.persistentstoragev2 import PersistentStorage
 
 description = __doc__
 
-usage = "{prefix}setprefix [desired prefix]"
+usage = "{prefix}setprefix (desired prefix)"
 
 aliases = {
     "prefix": "prefix",

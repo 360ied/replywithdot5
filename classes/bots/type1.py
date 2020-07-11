@@ -3,7 +3,6 @@ from os import environ
 import discord
 
 from classes.bot import Bot
-from commands import ping, setprefix
 from tasks.on_connect import status, persistentstorageautoupdate
 # from actions.on_message import
 from utility import blib
@@ -19,17 +18,21 @@ class Type1(Bot):
 
             async def on_connect(self):
                 self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
+                self.command_dict = command_dict
                 for i in task_dict["on_connect"]:
                     self.loop.create_task(i)
+
+            async def get_prefix_of_guild(self, guild):
+                try:
+                    return (await self.persistent_storage.get_config(guild.id))["prefix"]
+                except KeyError:
+                    return default_prefix
 
             async def on_message(self, message):
                 for i in actions_dict["on_message"]:
                     self.loop.create_task(i.run(self, message))
                 # if message.content.startswith(prefix):
-                try:
-                    prefix = (await self.persistent_storage.get_config(message.guild.id))["prefix"]
-                except KeyError:
-                    prefix = default_prefix
+                prefix = await self.get_prefix_of_guild(message.guild)
                 # Due to the presence of return statements, this should always be last.
                 if message.content.startswith(prefix):
                     prefix_and_command = message.content.split(string_separator)[0]
@@ -85,6 +88,9 @@ class Type1(Bot):
         }
 
         default_prefix = ","
+
+        # Commands are imported here to create separate instances for each bot
+        from commands import ping, setprefix
 
         command_dict = {
             "ping": ping,
