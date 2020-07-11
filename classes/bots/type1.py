@@ -90,13 +90,14 @@ class Type1(Bot):
         default_prefix = ","
 
         # Commands are imported here to create separate instances for each bot
-        from commands import ping, setprefix
+        from commands import ping, setprefix, helpcommand
 
         command_dict = {
             "ping": ping,
             "prefix": setprefix,
             "setprefix": setprefix,
-            "changeprefix": setprefix
+            "changeprefix": setprefix,
+            "help": helpcommand
         }
 
         actions_dict = {
