@@ -6,6 +6,8 @@ from string import digits
 import aiohttp
 from bs4 import BeautifulSoup
 
+# Shit doesn't work
+
 
 class WordData(object):
     def __init__(self, etymology=None, definitions=None, pronunciations=None,
