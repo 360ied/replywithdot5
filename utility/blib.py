@@ -209,10 +209,10 @@ def command_argument_parser(
     Parses Bash-like commands
     """
     separated_string = argument_string.split(string_separator)
+    # Avoid IndexError when zero arguments are present
     if separated_string == [""]:
         return dict()
     return_arguments = dict()
-    # More suitable way of iterating through string than a for loop in this case
     # Keep track of current position
     current_position = 0
     while len(separated_string) > 0:
@@ -223,7 +223,6 @@ def command_argument_parser(
         if current_item.startswith(keyword_argument_prefix):
             current_argument_value = list()
             # Do not take the next keyword argument as part of the current value
-            # Fill current_argument_value with the current argument value
             # Iterate through the processing queue
             while not separated_string[0].startswith(keyword_argument_prefix):
                 # Append value
