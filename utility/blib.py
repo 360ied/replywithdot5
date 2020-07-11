@@ -230,7 +230,7 @@ def command_argument_parser(
                 current_argument_value.append(separated_string.pop(0))
                 current_position += 1
             # Set the current value
-            return_arguments[current_item] = string_separator.join(current_argument_value)
+            return_arguments[current_item[len(keyword_argument_prefix):]] = string_separator.join(current_argument_value)
         else:
             # Set by positional argument
             return_arguments[expected_positional_arguments[current_position]] = current_item
