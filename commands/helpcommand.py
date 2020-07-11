@@ -34,7 +34,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
             )
             await message.channel.send(embed=embed)
     else:
-        commands = client.command_dict.values()
+        commands = client.command_dict.keys()
         command_names = [f"`{guild_prefix}{x}`" for x in commands]
         commands_str = f"{len(commands)} commands\n" \
                        f"{','.join(command_names)}"
