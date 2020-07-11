@@ -19,7 +19,7 @@ expected_positional_parameters = [
 
 
 async def run(client: discord.Client, group, message: discord.Message, args: dict) -> None:
-    guild_prefix = client.get_prefix_of_guild(message.guild)
+    guild_prefix = await client.get_prefix_of_guild(message.guild)
     if "command" in args:
         command_name = args["command"].lower()
         try:
