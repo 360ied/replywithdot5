@@ -225,8 +225,7 @@ def command_argument_parser(
             # Do not take the next keyword argument as part of the current value
             # Iterate through the processing queue
             while not separated_string[0].startswith(keyword_argument_prefix):
-                # Append value
-                # Remove processed value from the processing queue
+                # Append value and Remove processed value from the processing queue
                 current_argument_value.append(separated_string.pop(0))
                 current_position += 1
             # Set the current value

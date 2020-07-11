@@ -49,7 +49,7 @@ class Type1(Bot):
                                                            f"You are missing the permission {i}")
                                 return
 
-                        argument_string = message.content[len(prefix_and_command):]
+                        argument_string = message.content[len(prefix_and_command) + 1:]
 
                         command_arguments = blib.command_argument_parser(
                             argument_string, command.expected_positional_parameters
