@@ -209,6 +209,8 @@ def command_argument_parser(
     Parses Bash-like commands
     """
     separated_string = argument_string.split(string_separator)
+    if separated_string == [""]:
+        return dict()
     return_arguments = dict()
     # More suitable way of iterating through string than a for loop in this case
     # Keep track of current position
