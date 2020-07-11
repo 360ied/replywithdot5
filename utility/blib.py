@@ -233,7 +233,14 @@ def command_argument_parser(
             return_arguments[current_item[len(keyword_argument_prefix):]] = string_separator.join(current_argument_value)
         else:
             # Set by positional argument
-            return_arguments[expected_positional_arguments[current_position]] = current_item
+            # Allow the last positional argument to have spaces in between
+            if current_position > len(expected_positional_arguments):
+                if expected_positional_arguments[-1] in return_arguments:
+                    return_arguments[expected_positional_arguments[-1]] += f" {current_item}"
+                else:
+                    return_arguments[expected_positional_arguments[-1]] = current_item
+            else:
+                return_arguments[expected_positional_arguments[current_position]] = current_item
 
         current_position += 1
 
