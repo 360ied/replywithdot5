@@ -353,7 +353,7 @@ class WiktionaryParser(object):
 
     async def fetch(self, word, language=None, old_id=None):
         language = self.language if not language else language
-        async with aiohttp.ClientSession as session:
+        async with aiohttp.ClientSession() as session:
             async with session.get(self.url.format(word), params={'oldid': old_id}) as response:
                 self.soup = BeautifulSoup((await response.text()).replace('>\n<', '><'), 'html.parser')
         self.current_word = word
