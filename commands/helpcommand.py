@@ -29,9 +29,9 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         else:
             embed = discord.Embed(
                 title=command.description,
-                description=command.usage.replace("{prefix}", guild_prefix),
-                footer=f"Requested by {str(message.author)}"
+                description=command.usage.replace("{prefix}", guild_prefix)
             )
+            embed.set_footer(text=f"Requested by {str(message.author)}")
             await message.channel.send(embed=embed)
     else:
         commands = client.command_dict.keys()
@@ -40,7 +40,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
                        f"{','.join(command_names)}"
         embed = discord.Embed(
             title="Help Command",
-            description=commands_str,
-            footer=f"Requested by {str(message.author)}"
+            description=commands_str
         )
+        embed.set_footer(text=f"Requested by {str(message.author)}")
         await message.channel.send(embed=embed)
