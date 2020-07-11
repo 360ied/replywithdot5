@@ -57,8 +57,13 @@ class Type1(Bot):
                         command_arguments = blib.command_argument_parser(
                             argument_string, command.expected_positional_parameters
                         )
+                        # Map arguments from their aliases
+                        mapped_arguments = blib.map_aliases(
+                            command_arguments,
+                            command.aliases
+                        )
                         # Check if all the required parameters are present
-                        if not len(set(command_arguments.keys()) & command.required_parameters) == len(
+                        if not len(set(mapped_arguments.keys()) & command.required_parameters) == len(
                                 command.required_parameters):
                             await message.channel.send(f"Lacking Required Parameters!\n"
                                                        f"You are missing the parameters:\n"
@@ -71,10 +76,8 @@ class Type1(Bot):
                                     self,
                                     group,
                                     message,
-                                    blib.map_aliases(
-                                        command_arguments,
-                                        command.aliases
-                                    ))
+                                    mapped_arguments
+                                )
                             except Exception as e:
                                 await message.channel.send(f"{type(e).__name__}: {str(e)}")
 
