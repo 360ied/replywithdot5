@@ -93,7 +93,7 @@ class Type1(Bot):
         default_prefix = ","
 
         # Commands are imported here to create separate instances for each bot
-        from commands import ping, setprefix, helpcommand, wolframalpha
+        from commands import ping, setprefix, helpcommand, wolframalpha, meaning
 
         command_dict = {
             "ping": ping,
@@ -102,7 +102,11 @@ class Type1(Bot):
             "changeprefix": setprefix,
             "help": helpcommand,
             "wolfram": wolframalpha,
-            "wr": wolframalpha
+            "wr": wolframalpha,
+            "meaning": meaning,
+            "definition": meaning,
+            "mn": meaning,
+            "df": meaning
         }
 
         actions_dict = {
