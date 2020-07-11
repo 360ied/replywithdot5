@@ -224,6 +224,7 @@ def command_argument_parser(
             current_argument_value = list()
             # Do not take the next keyword argument as part of the current value
             # Iterate through the processing queue
+            # Note: For presence arguments, check for presence in the dictionary, not for its boolean value
             while len(separated_string) > 0 and not separated_string[0].startswith(keyword_argument_prefix):
                 # Append value and Remove processed value from the processing queue
                 current_argument_value.append(separated_string.pop(0))

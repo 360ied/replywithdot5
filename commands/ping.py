@@ -4,6 +4,8 @@ import discord
 
 description = __doc__
 
+usage = "{prefix}ping"
+
 aliases = dict()
 
 required_parameters = set()
