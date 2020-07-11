@@ -1,11 +1,11 @@
-"""Responds with Pong!"""
+"""Change Prefix"""
 import discord
 
 from utility.persistentstoragev2 import PersistentStorage
 
 description = __doc__
 
-usage = "{prefix}ping"
+usage = "{prefix}setprefix [desired prefix]"
 
 aliases = {
     "prefix": "prefix",
