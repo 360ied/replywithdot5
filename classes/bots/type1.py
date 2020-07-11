@@ -79,7 +79,7 @@ class Type1(Bot):
 
         task_dict = {
             "on_connect": [
-                status.run(self.client, "Custom Prefixes!"),
+                status.run(self.client, "In Testing"),
                 persistentstorageautoupdate.run(self.client)
             ]
         }
