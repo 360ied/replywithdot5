@@ -234,7 +234,7 @@ def command_argument_parser(
         else:
             # Set by positional argument
             # Allow the last positional argument to have spaces in between
-            if current_position > len(expected_positional_arguments):
+            if current_position >= len(expected_positional_arguments):
                 if expected_positional_arguments[-1] in return_arguments:
                     return_arguments[expected_positional_arguments[-1]] += f" {current_item}"
                 else:
