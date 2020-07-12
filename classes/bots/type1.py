@@ -5,6 +5,7 @@ import discord
 from classes.bot import Bot
 from tasks.on_connect import status, persistentstorageautoupdate
 # from actions.on_message import
+from actions.on_raw_reaction_add import reactionroleassigner
 from utility import blib
 from utility.persistentstoragev2 import PersistentStorage
 
@@ -93,7 +94,7 @@ class Type1(Bot):
         default_prefix = ","
 
         # Commands are imported here to create separate instances for each bot
-        from commands import ping, setprefix, helpcommand, wolframalpha, meaning
+        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole
 
         command_dict = {
             "ping": ping,
@@ -106,11 +107,16 @@ class Type1(Bot):
             "meaning": meaning,
             "definition": meaning,
             "mn": meaning,
-            "df": meaning
+            "df": meaning,
+            "addreactionrole": addreactionrole,
+            "arr": addreactionrole
         }
 
         actions_dict = {
             "on_message": {
+            },
+            "on_raw_reaction_add": {
+
             }
         }
 
