@@ -82,6 +82,10 @@ class Type1(Bot):
                             except Exception as e:
                                 await message.channel.send(f"{type(e).__name__}: {str(e)}")
 
+            async def on_raw_reaction_add(self, payload):
+                for i in actions_dict["on_raw_reaction_add"]:
+                    self.loop.create_task(i.run(self, payload))
+
         self.client = Client()
 
         task_dict = {
@@ -116,7 +120,7 @@ class Type1(Bot):
             "on_message": {
             },
             "on_raw_reaction_add": {
-
+                reactionroleassigner
             }
         }
 
