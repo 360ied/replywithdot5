@@ -42,8 +42,9 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         else:
             link = f"https://api.wolframalpha.com/v1/simple?i={query}&width=800&appid={wolfram_alpha_app_id}"
         async with session.get(link) as response:
-            if await response.text(errors="ignore") == "Wolfram|Alpha did not understand your input":
-                await message.channel.send("Wolfram|Alpha did not understand your input")
-            else:
+            try:
+                response_text = await response.text()
+                await message.channel.send(response_text)
+            except UnicodeDecodeError:
                 file = BytesIO(await response.read())
                 await message.channel.send(file=discord.File(file, filename="result.png"))
