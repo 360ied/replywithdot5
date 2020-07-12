@@ -1,3 +1,4 @@
+import traceback
 from os import environ
 
 import discord
@@ -80,6 +81,7 @@ class Type1(Bot):
                                     mapped_arguments
                                 )
                             except Exception as e:
+                                traceback.print_exc()
                                 await message.channel.send(f"{type(e).__name__}: {str(e)}")
 
             async def on_raw_reaction_add(self, payload):

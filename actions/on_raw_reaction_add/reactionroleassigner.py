@@ -24,3 +24,6 @@ async def run(client: discord.Client, raw_reaction_action_event: discord.RawReac
                 guild: discord.Guild = client.get_guild(raw_reaction_action_event.guild_id)
                 role: discord.Role = guild.get_role(role_id)
                 await raw_reaction_action_event.member.add_roles(role)
+                return "Assigned Role"
+
+    return "Reaction does not have a reaction role"
