@@ -34,6 +34,9 @@ class Piece:
     def __str__(self):
         return self.name
 
+    def __copy__(self):
+        return Piece(self.name, self.audio_source_getter, self.voice_client, self.text_channel, self.requester)
+
     async def initialize_audio_source(self):
         logging.debug("initializing audio source")
         self.audio_source = await self.audio_source_getter
@@ -156,8 +159,10 @@ class MusicQueue:
                 continue
             # Looping current piece goes first as it overrides looping the queue
             if self.looping_current_piece:
-                # Do not need to change the current piece if the current piece is being looped
-                self
+                # Add a duplicate of the current piece to the front of the queue
+                self.add_piece_front(self.current_piece.copy())
+                # Then exchange pieces
+                self.current_piece = self.pieces.popleft()
             elif self.looping_queue:
                 self.current_piece = self.pieces[0]
                 # Rotate to the left by 1 to put the current piece at the end of the queue
