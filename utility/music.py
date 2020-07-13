@@ -192,6 +192,8 @@ class MusicQueue:
             await self.text_channel.send(f"Now Playing: {i.name}")
             logging.debug("about to play")
             await i.play()
+        
+        await self.text_channel.send("Queue is finished.")
 
 
 class MusicManager:
