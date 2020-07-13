@@ -1,4 +1,5 @@
 """Base Wrapper for the Music Commands"""
+import asyncio
 from collections import deque
 import logging
 
@@ -38,6 +39,9 @@ class Piece:
         if self.audio_source is None:
             await self.initialize_audio_source()
         await self.voice_client.play(self.audio_source)
+        while self.voice_client.is_playing():
+            await asyncio.sleep(.1)
+
 
     async def stop(self):
         """Stop playing the audio source"""
