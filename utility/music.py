@@ -132,7 +132,7 @@ class MusicQueue:
         """
         while len(self.pieces) > 0:
             if self.current_piece is None:
-                logging.info(logging.INFO, "Current Piece is None")
+                logging.info("Current Piece is None")
                 self.current_piece = self.pieces.popleft()
                 yield self.current_piece
                 continue
@@ -165,7 +165,7 @@ class MusicQueue:
 
         self.playing = True
         for i in self.piece_iterator():
-            logging.log(logging.INFO, f"Length of self.pieces is {len(self.pieces)}")
+            logging.info(f"Length of self.pieces is {len(self.pieces)}")
             i: Piece
             await self.text_channel.send(f"Now Playing: {i.name}")
             await i.play()
