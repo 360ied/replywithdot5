@@ -1,11 +1,10 @@
 """BrianLib"""
+import hashlib
 import logging
 import os
-import re
-import time
-from datetime import datetime
-import hashlib
 import pathlib
+import re
+from datetime import datetime
 
 import aiohttp
 import discord
@@ -339,3 +338,14 @@ def remove_chars_from_string(string, chars):
 def keep_only_chars_in_string(string, chars):
     """Filter String to only contain chars"""
     return "".join([x for x in string if x in chars])
+
+
+class PreparedCoroutine:
+    def __init__(self, func, *args, **kwargs):
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
+
+    @property
+    def run(self):
+        return self.func(*self.args, **self.kwargs)
