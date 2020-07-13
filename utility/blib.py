@@ -299,6 +299,11 @@ async def get_voice_client(voice_channel, timeout=60, reconnect=True):
     return await voice_channel.connect(timeout=timeout, reconnect=reconnect)
 
 
+alphanumerical = "abcdefghijklmnopqrstuvwxyz1234567890"
+
+one_megabyte_chunk_size = 1024 * 1024
+
+
 async def audio_getter_creator(url):
     """
     :param url: URL
@@ -307,4 +312,22 @@ async def audio_getter_creator(url):
     """
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
-            return discord.FFmpegPCMAudio(response)
+            # return discord.FFmpegPCMAudio(BytesIO(await response.read()), pipe=True)
+            file_name = f"cache/{keep_only_chars_in_string(url, alphanumerical)}"
+            with open(file_name, "wb") as file:
+                while 1:
+                    chunk = await response.content.read(one_megabyte_chunk_size)
+                    if not chunk:
+                        break
+                    file.write(chunk)
+    return discord.FFmpegPCMAudio(file_name)
+
+
+def remove_chars_from_string(string, chars):
+    """Remove Chars from string"""
+    return "".join([x for x in string if x not in chars])
+
+
+def keep_only_chars_in_string(string, chars):
+    """Filter String to only contain chars"""
+    return "".join([x for x in string if x in chars])

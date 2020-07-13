@@ -130,6 +130,10 @@ class MusicQueue:
         Iterate through the pieces in the queue based on the queue settings
         """
         while len(self.pieces) > 0:
+            if self.current_piece is None:
+                self.current_piece = self.pieces.popleft()
+                yield self.current_piece
+                continue
             # Looping current piece goes first as it overrides looping the queue
             if self.looping_current_piece:
                 # Do not need to change the current piece if the current piece is being looped
@@ -195,7 +199,7 @@ class MusicManager:
         if self_current_voice_state is not None:
             # Check that we are connected to the same channel as the member
             if self_current_voice_state.channel == member.voice.channel:
-                return self.queues[member.guild]
+                return self.queues[member.guild.id]
             raise botexception.AlreadyOccupiedException("I am already in a voice channel")
 
         voice_client = await blib.connect_with_member(member, timeout=timeout, reconnect=reconnect)
@@ -211,6 +215,6 @@ class MusicManager:
         :rtype: MusicQueue
         For getting the queue without a voice client or text channel, call the dictionary directly
         """
-        if guild not in self.queues:
-            self.queues[guild] = MusicQueue(voice_client, text_channel)
-        return self.queues[guild]
+        if guild.id not in self.queues:
+            self.queues[guild.id] = MusicQueue(voice_client, text_channel)
+        return self.queues[guild.id]
