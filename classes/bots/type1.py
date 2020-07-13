@@ -21,12 +21,13 @@ class Type1(Bot):
 
             def __init__(self, loop=None, **options):
                 super().__init__(loop=loop, **options)
-                self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
-                self.command_dict = dict()
+                self.persistent_storage = None
+                self.command_dict = None
                 self.music_manager = MusicManager()
 
             async def on_connect(self):
                 self.command_dict = command_dict
+                self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
                 for i in task_dict["on_connect"]:
                     self.loop.create_task(i)
 
