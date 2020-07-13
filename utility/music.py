@@ -199,8 +199,12 @@ class MusicManager:
         if self_current_voice_state is not None:
             # Check that we are connected to the same channel as the member
             if self_current_voice_state.channel == member.voice.channel:
-                return self.queues[member.guild.id]
-            raise botexception.AlreadyOccupiedException("I am already in a voice channel")
+                try:
+                    return self.queues[member.guild.id]
+                except KeyError:
+                    await member.guild.me.edit(voice_channel=None)
+            else:
+                raise botexception.AlreadyOccupiedException("I am already in a voice channel")
 
         voice_client = await blib.connect_with_member(member, timeout=timeout, reconnect=reconnect)
 
