@@ -1,8 +1,11 @@
 """BrianLib"""
+import logging
 import os
 import re
 import time
 from datetime import datetime
+import hashlib
+import pathlib
 
 import aiohttp
 import discord
@@ -314,13 +317,17 @@ async def audio_getter_creator(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             # return discord.FFmpegPCMAudio(BytesIO(await response.read()), pipe=True)
-            file_name = f"cache/{time.time_ns()}"
-            with open(file_name, "wb") as file:
-                while 1:
-                    chunk = await response.content.read(one_megabyte_chunk_size)
-                    if not chunk:
-                        break
-                    file.write(chunk)
+            file_url_hash = hashlib.sha3_256(bytes(url)).hexdigest()
+            file_name = f"cache/{file_url_hash}"
+            if pathlib.Path(file_name).is_file():
+                logging.info(f"{file_name} already exists. Using cached version.")
+            else:
+                with open(file_name, "wb") as file:
+                    while 1:
+                        chunk = await response.content.read(one_megabyte_chunk_size)
+                        if not chunk:
+                            break
+                        file.write(chunk)
     return discord.FFmpegPCMAudio(file_name)
 
 
