@@ -10,7 +10,7 @@ import keepalive
 from classes.group import Group
 
 keepalive.keep_alive()
-logging.basicConfig()
+logging.basicConfig(level=logging.INFO)
 
 # For FFmpeg support
 sys.path.append("./libraries/")
