@@ -1,5 +1,6 @@
 """Base Wrapper for the Music Commands"""
 import asyncio
+import copy
 import logging
 from collections import deque
 
@@ -160,7 +161,7 @@ class MusicQueue:
             # Looping current piece goes first as it overrides looping the queue
             if self.looping_current_piece:
                 # Add a duplicate of the current piece to the front of the queue
-                self.add_piece_front(self.current_piece.copy())
+                self.add_piece_front(copy.copy(self.current_piece))
                 # Then exchange pieces
                 self.current_piece = self.pieces.popleft()
             elif self.looping_queue:
