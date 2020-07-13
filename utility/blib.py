@@ -1,6 +1,7 @@
 """BrianLib"""
 import os
 import re
+import time
 from datetime import datetime
 
 import aiohttp
@@ -313,7 +314,7 @@ async def audio_getter_creator(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             # return discord.FFmpegPCMAudio(BytesIO(await response.read()), pipe=True)
-            file_name = f"cache/{keep_only_chars_in_string(url, alphanumerical)}"
+            file_name = f"cache/{time.time_ns()}"
             with open(file_name, "wb") as file:
                 while 1:
                     chunk = await response.content.read(one_megabyte_chunk_size)

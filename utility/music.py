@@ -1,7 +1,7 @@
 """Base Wrapper for the Music Commands"""
 import asyncio
-from collections import deque
 import logging
+from collections import deque
 
 import discord
 
@@ -31,17 +31,30 @@ class Piece:
         self.text_channel = text_channel
         self.requester = requester
 
+    def __str__(self):
+        return self.name
+
     async def initialize_audio_source(self):
+        logging.debug("initializing audio source")
         self.audio_source = await self.audio_source_getter
 
     async def play(self):
         """Play the audio source"""
         if self.audio_source is None:
             await self.initialize_audio_source()
-        await self.voice_client.play(self.audio_source)
+            logging.debug("done init audio source")
+        logging.debug(self.name)
+        logging.debug(self.voice_client)
+        logging.debug(type(self.voice_client))
+        try:
+            await self.voice_client.play(self.audio_source)
+        except TypeError:
+            logging.debug("TypeError")
+        logging.debug("IM HERE")
+        await asyncio.sleep(10)
         while self.voice_client.is_playing():
+            # logging.info(self.voice_client.is_playing())
             await asyncio.sleep(.1)
-
 
     async def stop(self):
         """Stop playing the audio source"""
@@ -135,6 +148,8 @@ class MusicQueue:
         Iterate through the pieces in the queue based on the queue settings
         """
         while len(self.pieces) > 0:
+            logging.info(f"self.pieces is of length {len(self.pieces)}")
+            logging.info(str(self.pieces))
             if self.current_piece is None:
                 logging.info("Current Piece is None")
                 self.current_piece = self.pieces.popleft()
@@ -158,6 +173,7 @@ class MusicQueue:
                 self.current_piece = self.pieces.popleft()
 
             yield self.current_piece
+        logging.warning(f"Exited Generator")
 
     async def player(self):
         """
@@ -165,13 +181,16 @@ class MusicQueue:
         Plays the queue
         """
         if self.playing:
-            raise botexception.AlreadyOccupiedException("Already playing the queue")
+            # raise botexception.AlreadyOccupiedException("Already playing the queue")
+            logging.info("Alreadying playing the queue")
+            return
 
         self.playing = True
         for i in self.piece_iterator():
             logging.info(f"Length of self.pieces is {len(self.pieces)}")
             i: Piece
             await self.text_channel.send(f"Now Playing: {i.name}")
+            logging.debug("about to play")
             await i.play()
 
 

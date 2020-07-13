@@ -1,6 +1,7 @@
 """Persistent Storage V2"""
 import json
 from io import StringIO
+import logging
 
 import discord
 
@@ -44,7 +45,7 @@ class PersistentStorage:
     async def get_config(self, guild_id: int) -> dict:
         """Use this instead of fetch latest config"""
         if guild_id not in self.config_cache:
-            print(f"{guild_id} not in {self.config_cache}")
+            logging.debug(f"{guild_id} not in {self.config_cache}")
             self.config_cache[guild_id] = await self.fetch_latest_config(guild_id)
         return self.config_cache[guild_id]
 
@@ -57,4 +58,4 @@ class PersistentStorage:
 
     async def write_config_cache(self) -> list:
         """Returns the file URLs"""
-        return [await self.write_config(k, v) for k, v in self.config_cache.items()]
+        return [await self.write_config(k, v) for k, v in self.config_cache.copy().items()]
