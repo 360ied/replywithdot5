@@ -147,7 +147,7 @@ class MusicQueue:
         :rtype: Piece
         Iterate through the pieces in the queue based on the queue settings
         """
-        while len(self.pieces) > 0:
+        while len(self.pieces) > 0 or self.looping_current_piece:
             logging.info(f"self.pieces is of length {len(self.pieces)}")
             logging.info(str(self.pieces))
             if self.current_piece is None:
