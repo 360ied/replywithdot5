@@ -243,6 +243,7 @@ class MusicManager:
         :param discord.TextChannel text_channel: Text Channel for MusicQueue
         :return: Music Queue Instance
         :rtype: MusicQueue
+
         For getting the queue without a voice client or text channel, call the dictionary directly
         """
         if guild.id not in self.queues:
