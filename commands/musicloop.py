@@ -24,7 +24,11 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         await message.channel.send("You are not in a voice channel!")
         return "Requester is not in a voice channel"
 
-    queue = music_manager.get_queue(message.guild)
+    try:
+        queue = music_manager.queues[message.guild.id]
+    except KeyError:
+        await message.chnanel.send("There is nothing playing!")
+        return "There is nothing playing!"
 
     queue.looping_current_piece = not queue.looping_current_piece
     if queue.looping_current_piece:
