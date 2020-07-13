@@ -49,4 +49,6 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     music_queue.add_piece(piece)
 
+    await message.channel.send("Added to queue!")
+
     client.loop.create_task(music_queue.player())
