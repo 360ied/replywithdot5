@@ -1,9 +1,7 @@
 """Adds a reaction role to a message"""
-from urllib import parse
 
 import discord
 
-from utility import wordnetasync
 from utility.persistentstoragev2 import PersistentStorage
 
 description = __doc__

@@ -1,6 +1,3 @@
-import aiohttp
-import discord
-
 from utility import blib, music
 
 

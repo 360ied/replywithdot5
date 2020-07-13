@@ -1,7 +1,5 @@
 import discord
 
-from utility import blib
-
 
 class ExtendedMember:
 
