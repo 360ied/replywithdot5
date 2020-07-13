@@ -317,7 +317,7 @@ async def audio_getter_creator(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             # return discord.FFmpegPCMAudio(BytesIO(await response.read()), pipe=True)
-            file_url_hash = hashlib.sha3_256(bytes(url)).hexdigest()
+            file_url_hash = hashlib.sha3_256(bytes(url, "utf-8")).hexdigest()
             file_name = f"cache/{file_url_hash}"
             if pathlib.Path(file_name).is_file():
                 logging.info(f"{file_name} already exists. Using cached version.")
