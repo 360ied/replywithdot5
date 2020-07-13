@@ -119,8 +119,7 @@ class MusicQueue:
         :return: The new current piece
         :raises IndexError: If there are no pieces in the queue
         """
-        # Avoid Memory Leak
-        self.current_piece.audio_source = None
+
 
         # If both are enabled, do not remove the piece from the queue when skipping
         if self.looping_current_piece and self.looping_queue:
@@ -158,18 +157,12 @@ class MusicQueue:
             # Looping current piece goes first as it overrides looping the queue
             if self.looping_current_piece:
                 # Do not need to change the current piece if the current piece is being looped
-                pass
+                self
             elif self.looping_queue:
-                # Avoid Memory Leak
-                self.current_piece.audio_source = None
-
                 self.current_piece = self.pieces[0]
                 # Rotate to the left by 1 to put the current piece at the end of the queue
                 self.pieces.rotate(-1)
             else:
-                # Avoid Memory Leak
-                self.current_piece.audio_source = None
-
                 self.current_piece = self.pieces.popleft()
 
             yield self.current_piece
