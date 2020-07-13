@@ -6,8 +6,11 @@ from datetime import datetime
 import aiohttp
 import discord
 
+from classes import botexception
+
 
 # from objects import errors
+
 
 def dict_from_object(object_) -> dict:
     """Returns a dictionary with the public non-function attributes and values of an object"""
@@ -29,6 +32,7 @@ def dict_from_object(object_) -> dict:
     return dict_to_return
 
 
+# Currently Non-Functional
 async def upload_sharex(url, file) -> str:
     print(file)
     print("im here")
@@ -43,6 +47,7 @@ async def upload_sharex(url, file) -> str:
             return (await response.json())["files"][0]["url"]
 
 
+# Currently Non-Functional
 async def upload_discordjsmoe(file) -> str:
     print("im here")
     data = aiohttp.FormData()
@@ -230,7 +235,8 @@ def command_argument_parser(
                 current_argument_value.append(separated_string.pop(0))
                 current_position += 1
             # Set the current value
-            return_arguments[current_item[len(keyword_argument_prefix):]] = string_separator.join(current_argument_value)
+            return_arguments[current_item[len(keyword_argument_prefix):]] = string_separator.join(
+                current_argument_value)
         else:
             # Set by positional argument
             # Allow the last positional argument to have spaces in between
@@ -245,3 +251,60 @@ def command_argument_parser(
         current_position += 1
 
     return return_arguments
+
+
+# https://github.com/django/django/blob/stable/1.3.x/django/core/validators.py#L45
+valid_url_regex = regex = re.compile(
+    r'^(?:http|ftp)s?://'  # http:// or https://
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+    r'localhost|'  # localhost...
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+    r'(?::\d+)?'  # optional port
+    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+
+def is_string_valid_url(string: str) -> bool:
+    return re.match(valid_url_regex, string) is not None
+
+
+async def connect_with_member(member, timeout=60, reconnect=True):
+    """
+    :param discord.Member member: Member whom to join
+    :param int timeout: Timeout for joining the voice channel
+    :param bool reconnect: Whether to reconnect if part of the handshake fails or the gateway goes down
+    :return: The Voice Client
+    :rtype: discord.VoiceClient
+    :raises botexception.MemberNotInAnyVoiceChannelException: If member.voice is None
+    :raises asyncio.TimeoutError: Could not connect to the voice channel in time.
+    :raises discord.ClientException: You are already connected to a voice channel.
+    :raises discord.opus.OpusNotLoaded: The opus library has not been loaded.
+    """
+    if member.voice is None:
+        raise botexception.MemberNotInAnyVoiceChannelException
+    else:
+        return await get_voice_client(member.voice.channel, timeout=timeout, reconnect=reconnect)
+
+
+async def get_voice_client(voice_channel, timeout=60, reconnect=True):
+    """
+    :param discord.VoiceChannel voice_channel: Voice Channel to join
+    :param int timeout: Timeout for joining the voice channel
+    :param bool reconnect: Whether to reconnect if part of the handshake fails or the gateway goes down
+    :return: Voice Client
+    :rtype: discord.VoiceClient
+    :raises asyncio.TimeoutError: Could not connect to the voice channel in time.
+    :raises discord.ClientException: You are already connected to a voice channel.
+    :raises discord.opus.OpusNotLoaded: The opus library has not been loaded.
+    """
+    return await voice_channel.connect(timeout=timeout, reconnect=reconnect)
+
+
+async def audio_getter_creator(url):
+    """
+    :param url: URL
+    :return: FFmpegPCMAudio
+    :rtype: discord.FFmpegPCMAudio
+    """
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            return discord.FFmpegPCMAudio(response)

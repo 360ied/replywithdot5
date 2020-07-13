@@ -4,3 +4,11 @@ class BotException(Exception):
 
 class MissingPermissionsException(BotException):
     pass
+
+
+class MemberNotInAnyVoiceChannelException(BotException):
+    pass
+
+
+class AlreadyOccupiedException(BotException):
+    pass

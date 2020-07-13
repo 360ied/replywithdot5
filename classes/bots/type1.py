@@ -3,11 +3,12 @@ from os import environ
 
 import discord
 
-from classes.bot import Bot
-from tasks.on_connect import status, persistentstorageautoupdate
 # from actions.on_message import
 from actions.on_raw_reaction_add import reactionroleassigner
+from classes.bot import Bot
+from tasks.on_connect import status, persistentstorageautoupdate
 from utility import blib
+from utility.music import MusicManager
 from utility.persistentstoragev2 import PersistentStorage
 
 
@@ -18,9 +19,13 @@ class Type1(Bot):
 
         class Client(discord.Client):
 
-            async def on_connect(self):
+            def __init__(self, loop=None, **options):
+                super().__init__(loop=loop, **options)
                 self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
                 self.command_dict = command_dict
+                self.music_manager = MusicManager()
+
+            async def on_connect(self):
                 for i in task_dict["on_connect"]:
                     self.loop.create_task(i)
 
@@ -92,7 +97,7 @@ class Type1(Bot):
 
         task_dict = {
             "on_connect": [
-                status.run(self.client, "In Testing"),
+                status.run(self.client, "New Music Commands! (In Heavy Development)"),
                 persistentstorageautoupdate.run(self.client)
             ]
         }
@@ -100,7 +105,7 @@ class Type1(Bot):
         default_prefix = ","
 
         # Commands are imported here to create separate instances for each bot
-        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole
+        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole, playpiece
 
         command_dict = {
             "ping": ping,
@@ -115,7 +120,8 @@ class Type1(Bot):
             "mn": meaning,
             "df": meaning,
             "addreactionrole": addreactionrole,
-            "arr": addreactionrole
+            "arr": addreactionrole,
+            "play": playpiece
         }
 
         actions_dict = {

@@ -5,11 +5,18 @@ from io import StringIO
 import discord
 
 
+async def fetch_latest_message(text_channel: discord.TextChannel) -> discord.Message:
+    """Gets the latest message in a text channel"""
+    return (await text_channel.history(limit=1).flatten())[0]
+
+
 class PersistentStorage:
 
     def __init__(self, host_guild: discord.Guild):
-        """Using Discord as a storage format!
-        Allows storage of json files using Discord"""
+        """
+        Using Discord as a storage format!
+        Allows storage of json files using Discord
+        """
         self.host_guild: discord.Guild = host_guild
         self.config_cache = dict()
 
@@ -22,15 +29,11 @@ class PersistentStorage:
         channel = await self.host_guild.create_text_channel(str(guild_id))
         await channel.send(file=discord.File(StringIO("{}"), filename=f"{guild_id}.json"))
 
-    async def fetch_latest_message(self, text_channel: discord.TextChannel) -> discord.Message:
-        """Gets the latest message in a text channel"""
-        return (await text_channel.history(limit=1).flatten())[0]
-
     async def fetch_latest_config(self, guild_id: int) -> dict:
         """Gets the latest config for a guild in dict format"""
         return json.loads(
             (await (
-                await self.fetch_latest_message(
+                await fetch_latest_message(
                     await self.get_channel(guild_id))).attachments[0].read()).decode("utf-8"))
 
     async def write_config(self, guild_id: int, config: dict) -> str:

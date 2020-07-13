@@ -2,12 +2,21 @@ import asyncio
 import json
 import logging
 import os
+import sys
+
+import discord
 
 import keepalive
 from classes.group import Group
 
 keepalive.keep_alive()
 logging.basicConfig()
+
+# For FFmpeg support
+sys.path.append("./libraries/")
+
+# Allow for playing of audio
+discord.opus.load_opus("./libraries/libopus.so.0.8.0")
 
 group = Group()
 
