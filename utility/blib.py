@@ -346,6 +346,6 @@ class PreparedCoroutine:
         self.args = args
         self.kwargs = kwargs
 
-    @property
+    # @property
     def run(self):
         return self.func(*self.args, **self.kwargs)

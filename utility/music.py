@@ -20,7 +20,7 @@ class Piece:
     def __init__(self, name, audio_source_getter, voice_client, text_channel, requester):
         """
         :param str name: Name of the Piece
-        :param collections.abc.Coroutine audio_source_getter: Audio source getter coroutine
+        :param blib.PreparedCoroutine audio_source_getter: Audio source getter prepared coroutine
         :param discord.VoiceClient voice_client: Associated voice client to play in
         :param discord.TextChannel text_channel: Associated text channel to log in
         :param discord.Member requester: The member who requested the piece
@@ -40,7 +40,7 @@ class Piece:
 
     async def initialize_audio_source(self):
         logging.debug("initializing audio source")
-        self.audio_source = await self.audio_source_getter
+        self.audio_source = await self.audio_source_getter.run()
 
     async def play(self):
         """Play the audio source"""
