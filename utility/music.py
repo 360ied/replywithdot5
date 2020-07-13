@@ -95,7 +95,7 @@ class MusicQueue:
         self.voice_client = voice_client
         self.text_channel = text_channel
 
-        self.playing = False
+        # self.playing = False
 
     def add_piece(self, piece):
         """
@@ -179,12 +179,12 @@ class MusicQueue:
         :raises botexception.AlreadyOccupiedException: Already playing the queue
         Plays the queue
         """
-        if self.playing:
+        # if self.playing:
+        if self.voice_client.is_playing():
             # raise botexception.AlreadyOccupiedException("Already playing the queue")
-            logging.info("Alreadying playing the queue")
+            logging.info("Already playing the queue")
             return
 
-        self.playing = True
         for i in self.piece_iterator():
             logging.info(f"Length of self.pieces is {len(self.pieces)}")
             i: Piece
