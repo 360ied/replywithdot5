@@ -40,7 +40,7 @@ class Piece:
 
     async def initialize_audio_source(self):
         logging.debug("initializing audio source")
-        self.audio_source = await self.audio_source_getter
+        self.audio_source = await copy.copy(self.audio_source_getter)
 
     async def play(self):
         """Play the audio source"""
