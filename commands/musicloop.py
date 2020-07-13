@@ -27,7 +27,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
     try:
         queue = music_manager.queues[message.guild.id]
     except KeyError:
-        await message.chnanel.send("There is nothing playing!")
+        await message.channel.send("There is nothing playing!")
         return "There is nothing playing!"
 
     queue.looping_current_piece = not queue.looping_current_piece
