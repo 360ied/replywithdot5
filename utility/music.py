@@ -122,7 +122,7 @@ class MusicQueue:
         """Skip the current piece"""
 
         # Stop the current piece
-        await self.voice_client.stop()
+        await self.current_piece.stop()
         # I don't think any of this is necessary
         """
         # If both are enabled, do not remove the piece from the queue when skipping
