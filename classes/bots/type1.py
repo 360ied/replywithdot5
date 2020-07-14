@@ -126,7 +126,7 @@ class Type1(Bot):
             "arr": addreactionrole,
             "play": musicplay,
             "loop": musicloop,
-            "loopqueue": musicloopqueue
+            "loopqueue": musicloopqueue,
             "skip": musicskip,
             "disconnect": musicdisconnect,
             "dc": musicdisconnect,
