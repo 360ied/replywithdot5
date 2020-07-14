@@ -124,6 +124,8 @@ class MusicQueue:
         :raises IndexError: If there are no pieces in the queue
         """
 
+        # Stop the current piece
+        self.voice_client.stop()
 
         # If both are enabled, do not remove the piece from the queue when skipping
         if self.looping_current_piece and self.looping_queue:
@@ -140,7 +142,13 @@ class MusicQueue:
             self.pieces.rotate(-1)
         # Neither looping current piece nor looping queue
         else:
-            self.current_piece = self.pieces.popleft()
+            try:
+                self.current_piece = self.pieces.popleft()
+            except IndexError:
+                self.current_piece = None
+
+        if self.current_piece is not None:
+            self.current_piece.play()
 
         return self.current_piece
 
