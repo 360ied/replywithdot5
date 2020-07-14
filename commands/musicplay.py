@@ -6,8 +6,9 @@ from utility import music, musicservicehandler
 description = __doc__
 
 usage = "{prefix}play (service) (query)\n" \
-        "Supported Services: dl\n" \
-        "dl: Direct Download"
+        "Supported Services: dl, yt\n" \
+        "dl: Direct Download\n" \
+        "yt: Youtube"
 
 aliases = {
     "service": "service",
@@ -45,7 +46,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         await message.channel.send("Invalid service!")
         return "Invalid Service"
 
-    piece = await handler(query, music_queue.voice_client, message.channel, message.author)
+    piece = await handler(query, music_queue.voice_client, message.channel, message.author, client.loop)
 
     music_queue.add_piece(piece)
 
