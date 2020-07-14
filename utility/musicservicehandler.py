@@ -35,6 +35,8 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
 async def handler_yt(query, voice_client, text_channel, member, loop):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
     # debug
+    print(video_info)
+    print(type(video_info))
     with open("latest_json.json", "wb") as fp:
         json.dump(video_info, fp)
     # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
