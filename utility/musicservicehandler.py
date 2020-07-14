@@ -33,12 +33,12 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
 
 async def handler_yt(query, voice_client, text_channel, member, loop):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
-
+    link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
 
     # This will not download anything, as it will have already be downloaded
     prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
     return music.Piece(
-        video_info["entries"][0]["title"], prepared_coroutine, voice_client, text_channel, member
+        link, prepared_coroutine, voice_client, text_channel, member
     )
 
 
