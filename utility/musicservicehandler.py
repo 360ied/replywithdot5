@@ -56,4 +56,6 @@ def helper_ytdl(query):
         'usenetrc': True
     }
     ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
-    ytdl.download([query])
+    # ytdl.download([query])
+    output = ytdl.extract_info(query, download=True)
+    print(output)
