@@ -63,3 +63,5 @@ def parser_youtube_search(response: dict, query, voice_client, text_channel, mem
         text=f"{video['extractor_key']}\n"
              f"From query: {query}"
     )
+
+    return embed
