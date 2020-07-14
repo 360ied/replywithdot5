@@ -312,20 +312,10 @@ async def audio_getter_creator(url):
     :param url: URL
     :return: FFmpegPCMAudio
     :rtype: discord.FFmpegPCMAudio
+    Reads cached files from disk
     """
     file_url_hash = hashlib.sha3_256(bytes(url, "utf-8")).hexdigest()
     file_name = f"cache/{file_url_hash}"
-    if pathlib.Path(file_name).is_file():
-        logging.info(f"{file_name} already exists. Using cached version.")
-    else:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                with open(file_name, "wb") as file:
-                    while 1:
-                        chunk = await response.content.read(one_megabyte_chunk_size)
-                        if not chunk:
-                            break
-                        file.write(chunk)
 
     return discord.FFmpegPCMAudio(file_name)
 

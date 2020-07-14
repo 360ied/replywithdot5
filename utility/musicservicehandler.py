@@ -1,11 +1,30 @@
 import hashlib
+import logging
+import pathlib
 
+import aiohttp
 import youtube_dl
 
 from utility import blib, music
 
+cache_folder = "cache/"
+
 
 async def handler_dl(query, voice_client, text_channel, member, loop):
+    file_url_hash = hashlib.sha3_256(bytes(query, "utf-8")).hexdigest()
+    file_name = f"{cache_folder}{file_url_hash}"
+    if pathlib.Path(file_name).is_file():
+        logging.info(f"{file_name} already exists. Using cached version.")
+    else:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(query) as response:
+                with open(file_name, "wb") as file:
+                    while 1:
+                        chunk = await response.content.read(blib.one_megabyte_chunk_size)
+                        if not chunk:
+                            break
+                        file.write(chunk)
+
     prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
     return music.Piece(
         query, prepared_coroutine, voice_client, text_channel, member
@@ -24,7 +43,7 @@ async def handler_yt(query, voice_client, text_channel, member, loop):
 def helper_ytdl(query):
     ytdl_format_options = {
         'format': 'bestaudio/best',
-        'outtmpl': f"cache/{hashlib.sha3_256(bytes(query, 'utf-8')).hexdigest()}",
+        'outtmpl': f"{cache_folder}{hashlib.sha3_256(bytes(query, 'utf-8')).hexdigest()}",
         'restrictfilenames': True,
         'noplaylist': True,
         'nocheckcertificate': True,
