@@ -118,7 +118,7 @@ class MusicQueue:
         """
         self.pieces.pop(index)
 
-    def skip_current_piece(self):
+    async def skip_current_piece(self):
         """
         :return: The new current piece
         :raises IndexError: If there are no pieces in the queue
