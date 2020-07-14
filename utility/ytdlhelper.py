@@ -11,7 +11,7 @@ def parse(response: dict, query, voice_client, text_channel, member, loop):
         ":": "_"
     })
     try:
-        parser = locals()[f"parser_{parse_type}"]
+        parser = globals()[f"parser_{parse_type}"]
     except KeyError:
         parser = _parser_generic
 
@@ -23,7 +23,7 @@ def _parser_generic(response: dict, query, voice_client, text_channel, member, l
     embed.title = response["id"]
     embed.set_author(name=str(member), url=str(member.avatar_url))
     embed.set_footer(
-        text=f"response['extractor_key']\n"
+        text=f"{response['extractor_key']}\n"
              f"From query: ```{query}```"
     )
 
@@ -41,7 +41,7 @@ def parser_youtube(response: dict, query, voice_client, text_channel, member, lo
     embed.add_field(name="Length", value=blib.format_time(seconds=response["duration"]))
 
     embed.set_footer(
-        text=f"response['extractor_key']\n"
+        text=f"{response['extractor_key']}\n"
              f"From query: ```{query}```"
     )
 
