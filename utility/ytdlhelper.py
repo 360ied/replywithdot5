@@ -21,7 +21,7 @@ def parse(response: dict, query, voice_client, text_channel, member, loop):
 def _parser_generic(response: dict, query, voice_client, text_channel, member, loop):
     embed = discord.Embed()
     embed.title = response["id"]
-    embed.set_author(name=str(member), url=str(member.avatar_url))
+    embed.set_author(name=str(member), icon_url=str(member.avatar_url))
     embed.set_footer(
         text=f"{response['extractor_key']}\n"
              f"From query: ```{query}```"
@@ -36,13 +36,13 @@ def parser_youtube(response: dict, query, voice_client, text_channel, member, lo
     embed.url = response["webpage_url"]
     embed.set_thumbnail(url=response["thumbnail"])
 
-    embed.set_author(name=str(member), url=str(member.avatar_url))
+    embed.set_author(name=str(member), icon_url=str(member.avatar_url))
 
     embed.add_field(name="Length", value=blib.format_time(seconds=response["duration"]))
 
     embed.set_footer(
         text=f"{response['extractor_key']}\n"
-             f"From query: ```{query}```"
+             f"From query: {query}"
     )
 
     return embed
