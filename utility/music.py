@@ -125,7 +125,7 @@ class MusicQueue:
         """
 
         # Stop the current piece
-        self.voice_client.stop()
+        await self.voice_client.stop()
 
         # If both are enabled, do not remove the piece from the queue when skipping
         if self.looping_current_piece and self.looping_queue:
@@ -148,7 +148,7 @@ class MusicQueue:
                 self.current_piece = None
 
         if self.current_piece is not None:
-            self.current_piece.play()
+            await self.current_piece.play()
 
         return self.current_piece
 
