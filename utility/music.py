@@ -17,15 +17,17 @@ music_queue = list()
 
 
 class Piece:
-    def __init__(self, name, audio_source_getter, voice_client, text_channel, requester):
+    def __init__(self, name, embed, audio_source_getter, voice_client, text_channel, requester):
         """
         :param str name: Name of the Piece
+        :param discord.Embed embed: Rich Embed for user to see
         :param blib.PreparedCoroutine audio_source_getter: Audio source getter prepared coroutine
         :param discord.VoiceClient voice_client: Associated voice client to play in
         :param discord.TextChannel text_channel: Associated text channel to log in
         :param discord.Member requester: The member who requested the piece
         """
         self.name = name
+        self.embed = embed
         self.audio_source = None
         self.audio_source_getter = audio_source_getter
         self.voice_client = voice_client
@@ -169,8 +171,12 @@ class MusicQueue:
         for i in self.piece_iterator():
             logging.info(f"Length of self.pieces is {len(self.pieces)}")
             i: Piece
-            await self.text_channel.send(f"Now Playing: {i.name}")
-            logging.debug("about to play")
+
+            if i.embed is None:
+                await self.text_channel.send(f"Now Playing: {i.name}")
+            else:
+                await self.text_channel.send(content="Now Playing:", embed=i.embed)
+
             await i.play()
 
         await self.text_channel.send("Queue is finished.")

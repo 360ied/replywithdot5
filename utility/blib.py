@@ -4,7 +4,7 @@ import logging
 import os
 import pathlib
 import re
-from datetime import datetime
+import datetime
 
 import aiohttp
 import discord
@@ -125,7 +125,7 @@ def get_snowflake_timestamp(snowflake: int) -> str:
     """Returns UTC time from a Discord snowflake"""
     # milliseconds from discord epoch
     time_flake = ((snowflake >> 22) + 1420070400000) // 1000
-    return datetime.utcfromtimestamp(time_flake).strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.datetime.utcfromtimestamp(time_flake).strftime('%Y-%m-%d %H:%M:%S')
 
 
 def is_member_in_guilds(member_id: int, guilds: set) -> bool:
@@ -339,3 +339,8 @@ class PreparedCoroutine:
     # @property
     def run(self):
         return self.func(*self.args, **self.kwargs)
+
+
+def format_time(**kwargs):
+    """Format time string"""
+    return str(datetime.timedelta(**kwargs))
