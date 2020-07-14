@@ -107,10 +107,11 @@ class Type1(Bot):
         default_prefix = ","
 
         # Commands are imported here to create separate instances for each bot
-        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole,\
+        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole, \
             musicplay, musicloop, musicskip, musicdisconnect, musicnowplaying, musicloopqueue
 
-        command_dict = {
+        # Sort the dictionary alphabetically by the key
+        command_dict = dict(sorted({
             "ping": ping,
             "prefix": setprefix,
             "setprefix": setprefix,
@@ -126,13 +127,13 @@ class Type1(Bot):
             "arr": addreactionrole,
             "play": musicplay,
             "loop": musicloop,
-            "loopqueue": musicloopqueue,
             "skip": musicskip,
             "disconnect": musicdisconnect,
             "dc": musicdisconnect,
             "nowplaying": musicnowplaying,
-            "np": musicnowplaying
-        }
+            "np": musicnowplaying,
+            "loopqueue": musicloopqueue
+        }.items(), key=lambda item: item[0]))
 
         actions_dict = {
             "on_message": {
