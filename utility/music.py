@@ -120,35 +120,10 @@ class MusicQueue:
 
     def skip_current_piece(self):
         """Skip the current piece"""
-
         # Stop the current piece
+        # Once the current piece is stopped, the next piece will automatically play
         self.current_piece.stop()
-        # I don't think any of this is necessary
-        """
-        # If both are enabled, do not remove the piece from the queue when skipping
-        if self.looping_current_piece and self.looping_queue:
-            self.current_piece = self.pieces[0]
-            # Rotate to the left by 1 to put the current piece at the end of the queue
-            self.pieces.rotate(-1)
-        # Does the same thing as if it were not looping
-        # elif self.looping_current_piece:
-        #     self.current_piece = self.pieces.popleft()
-        # Note: While skipping the current piece with a queue with only one element
-        # the same piece will come on as tracks are not removed from the queue when looping queue is enabled
-        elif self.looping_queue:
-            self.current_piece = self.pieces[0]
-            self.pieces.rotate(-1)
-        # Neither looping current piece nor looping queue
-        else:
-            try:
-                self.current_piece = self.pieces.popleft()
-            except IndexError:
-                self.current_piece = None
 
-        if self.current_piece is not None:
-            await self.current_piece.play()
-
-        return self.current_piece"""
 
     def piece_iterator(self):
         """
