@@ -8,7 +8,9 @@ description = __doc__
 usage = "{prefix}play (service) (query)\n" \
         "Supported Services: dl, yt\n" \
         "dl: Direct Download\n" \
-        "yt: Youtube"
+        "yt: Youtube-DL, and in conjunction: >1000 sites\n" \
+        "Full list of sites supported by Youtube-DL: https://ytdl-org.github.io/youtube-dl/supportedsites.html\n" \
+        "Note: It is recommended that you give URLs as queries instead of searches."
 
 aliases = {
     "service": "service",
