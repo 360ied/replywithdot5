@@ -37,7 +37,7 @@ async def handler_yt(query, voice_client, text_channel, member, loop):
     # debug
     print(video_info)
     print(type(video_info))
-    with open("latest_json.json", "wb") as fp:
+    with open("latest_json.json", "w") as fp:
         json.dump(video_info, fp)
     # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
 
