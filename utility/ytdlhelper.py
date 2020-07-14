@@ -24,7 +24,7 @@ def _parser_generic(response: dict, query, voice_client, text_channel, member, l
     embed.set_author(name=str(member), icon_url=str(member.avatar_url))
     embed.set_footer(
         text=f"{response['extractor_key']}\n"
-             f"From query: ```{query}```"
+             f"From query: {query}"
     )
 
     return embed
