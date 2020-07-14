@@ -119,14 +119,12 @@ class MusicQueue:
         self.pieces.pop(index)
 
     async def skip_current_piece(self):
-        """
-        :return: The new current piece
-        :raises IndexError: If there are no pieces in the queue
-        """
+        """Skip the current piece"""
 
         # Stop the current piece
         await self.voice_client.stop()
-
+        # I don't think any of this is necessary
+        """
         # If both are enabled, do not remove the piece from the queue when skipping
         if self.looping_current_piece and self.looping_queue:
             self.current_piece = self.pieces[0]
@@ -150,7 +148,7 @@ class MusicQueue:
         if self.current_piece is not None:
             await self.current_piece.play()
 
-        return self.current_piece
+        return self.current_piece"""
 
     def piece_iterator(self):
         """
@@ -199,7 +197,7 @@ class MusicQueue:
             await self.text_channel.send(f"Now Playing: {i.name}")
             logging.debug("about to play")
             await i.play()
-        
+
         await self.text_channel.send("Queue is finished.")
 
 
