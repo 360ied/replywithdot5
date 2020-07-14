@@ -107,8 +107,8 @@ class Type1(Bot):
         default_prefix = ","
 
         # Commands are imported here to create separate instances for each bot
-        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole, musicplay, musicloop, \
-            musicskip
+        from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole,\
+            musicplay, musicloop, musicskip, musicdisconnect
 
         command_dict = {
             "ping": ping,
@@ -126,7 +126,9 @@ class Type1(Bot):
             "arr": addreactionrole,
             "play": musicplay,
             "loop": musicloop,
-            "skip": musicskip
+            "skip": musicskip,
+            "disconnect": musicdisconnect,
+            "dc": musicdisconnect
         }
 
         actions_dict = {

@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 import pathlib
 
@@ -33,6 +34,9 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
 
 async def handler_yt(query, voice_client, text_channel, member, loop):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
+    # debug
+    with open("latest_json.json", "wb") as fp:
+        json.dump(video_info, fp)
     # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
 
     # This will not download anything, as it will have already be downloaded
@@ -42,7 +46,7 @@ async def handler_yt(query, voice_client, text_channel, member, loop):
     )
 
 
-def helper_ytdl(query):
+def helper_ytdl(query, **options):
     ytdl_format_options = {
         'format': 'bestaudio/best',
         'outtmpl': f"{cache_folder}{hashlib.sha3_256(bytes(query, 'utf-8')).hexdigest()}",
@@ -57,6 +61,7 @@ def helper_ytdl(query):
         'source_address': '0.0.0.0',
         'usenetrc': True
     }
+    ytdl_format_options.update(options)
     ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
     # ytdl.download([query])
     output = ytdl.extract_info(query, download=True)
