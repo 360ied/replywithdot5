@@ -32,5 +32,5 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         return "There is nothing playing!"
 
     queue: MusicQueue
-    await queue.skip_current_piece()
+    queue.skip_current_piece()
     await message.channel.send("Skipped current piece")

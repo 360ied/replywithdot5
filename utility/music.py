@@ -51,7 +51,7 @@ class Piece:
         logging.debug(self.voice_client)
         logging.debug(type(self.voice_client))
         try:
-            await self.voice_client.play(self.audio_source)
+            self.voice_client.play(self.audio_source)
         except TypeError:
             logging.debug("TypeError")
         logging.debug("IM HERE")
@@ -60,17 +60,17 @@ class Piece:
             # logging.info(self.voice_client.is_playing())
             await asyncio.sleep(.1)
 
-    async def stop(self):
+    def stop(self):
         """Stop playing the audio source"""
-        await self.voice_client.stop()
+        self.voice_client.stop()
 
-    async def pause(self):
+    def pause(self):
         """Pause the playing"""
-        await self.voice_client.pause()
+        self.voice_client.pause()
 
-    async def resume(self):
+    def resume(self):
         """Resume the playing"""
-        await self.voice_client.resume()
+        self.voice_client.resume()
 
 
 class MusicQueue:
@@ -118,11 +118,11 @@ class MusicQueue:
         """
         self.pieces.pop(index)
 
-    async def skip_current_piece(self):
+    def skip_current_piece(self):
         """Skip the current piece"""
 
         # Stop the current piece
-        await self.current_piece.stop()
+        self.current_piece.stop()
         # I don't think any of this is necessary
         """
         # If both are enabled, do not remove the piece from the queue when skipping
