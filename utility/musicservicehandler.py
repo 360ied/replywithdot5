@@ -28,7 +28,7 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
 
     prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
     return music.Piece(
-        query, prepared_coroutine, voice_client, text_channel, member
+        query, None, prepared_coroutine, voice_client, text_channel, member
     )
 
 
@@ -44,8 +44,10 @@ async def handler_yt(query, voice_client, text_channel, member, loop):
     # This will not download anything, as it will have already be downloaded
     prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
 
+    embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
+
     return music.Piece(
-        query, prepared_coroutine, voice_client, text_channel, member
+        query, embed, prepared_coroutine, voice_client, text_channel, member
     )
 
 
