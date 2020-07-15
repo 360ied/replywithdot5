@@ -5,26 +5,23 @@ from utility import music, musicservicehandler
 
 description = __doc__
 
-usage = "{prefix}play (service) (query)\n" \
-        "Supported Services: dl, yt\n" \
-        "dl: Direct Download\n" \
-        "yt: Youtube-DL, and in conjunction: >1000 sites\n" \
-        "Full list of sites supported by Youtube-DL: https://ytdl-org.github.io/youtube-dl/supportedsites.html\n" \
-        "Note: It is recommended that you give URLs as queries instead of searches."
+usage = "{prefix}play (query) [--dl]\n" \
+        "Full list of sites supported: https://ytdl-org.github.io/youtube-dl/supportedsites.html\n" \
+        "If you want to use a direct download, append --dl to the end of the command"
 
 aliases = {
-    "service": "service",
-    "query": "query"
+    "query": "query",
+    "dl": "dl"
 }
 
 required_parameters = {
-    "service", "query"
+    "query"
 }
 
 required_permissions = set()
 
 expected_positional_parameters = [
-    "service", "query"
+    "query"
 ]
 
 
@@ -42,8 +39,10 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     query = args["query"]
 
+    service = "dl" if "dl" in args else "yt"
+
     try:
-        handler = getattr(musicservicehandler, f"handler_{args['service']}")
+        handler = getattr(musicservicehandler, f"handler_{service}")
     except AttributeError:
         await message.channel.send("Invalid service!")
         return "Invalid Service"
@@ -52,6 +51,8 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     music_queue.add_piece(piece)
 
-    await message.channel.send("Added to queue!")
+    await message.channel.send("Added to queue!", embed=piece.embed)
 
     client.loop.create_task(music_queue.player())
+
+    return "Success"
