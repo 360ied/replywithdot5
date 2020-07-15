@@ -5,6 +5,7 @@ import discord
 
 # from actions.on_message import
 from actions.on_raw_reaction_add import reactionroleassigner
+from actions.on_voice_state_update import remove_queue
 from classes.bot import Bot
 from tasks.on_connect import status, persistentstorageautoupdate
 from utility import blib
@@ -95,6 +96,10 @@ class Type1(Bot):
                 for i in actions_dict["on_raw_reaction_add"]:
                     self.loop.create_task(i.run(self, payload))
 
+            async def on_voice_state_update(self, member, before, after):
+                for i in actions_dict["on_voice_state_update"]:
+                    self.loop.create_task(i.run(self, member, before, after))
+
         self.client = Client()
 
         task_dict = {
@@ -140,6 +145,9 @@ class Type1(Bot):
             },
             "on_raw_reaction_add": {
                 reactionroleassigner
+            },
+            "on_voice_state_update": {
+                remove_queue
             }
         }
 
