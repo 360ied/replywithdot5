@@ -14,4 +14,4 @@ async def run(client: discord.Client, member: discord.Member, before: discord.Vo
         if after.channel is None:
             music_manager: music.MusicManager = client.music_manager
             del music_manager.queues[member.guild.id]
-            logging.info(f"Removed music manager from {str(member.guild)}")
+            logging.info(f"Removed queue from {str(member.guild)}")
