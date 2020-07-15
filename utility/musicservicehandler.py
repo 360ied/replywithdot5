@@ -32,7 +32,7 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
     )]
 
 
-async def handler_yt(query, voice_client, text_channel, member, loop):
+async def handler_yt(query, voice_client, text_channel, member, loop, pack=True):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
     # debug
     logging.debug(video_info)
@@ -54,7 +54,12 @@ async def handler_yt(query, voice_client, text_channel, member, loop):
 
     embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
 
-    return [music.Piece(query, embed, prepared_coroutine, voice_client, text_channel, member)]
+    piece = music.Piece(query, embed, prepared_coroutine, voice_client, text_channel, member)
+
+    if pack:
+        return [piece]
+    else:
+        return piece
 
 
 async def helper_handler_yt_playlist(info, voice_client, text_channel, member, loop):
@@ -62,7 +67,7 @@ async def helper_handler_yt_playlist(info, voice_client, text_channel, member, l
     videos = info["entries"]
     logging.info(f"Processing playlist of {len(videos)} videos")
     for i in videos:
-        yield await handler_yt(i["webpage_url"], voice_client, text_channel, member, loop)
+        yield await handler_yt(i["webpage_url"], voice_client, text_channel, member, loop, pack=False)
 
 
 def helper_ytdl(query, **options):
