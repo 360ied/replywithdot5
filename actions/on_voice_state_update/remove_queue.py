@@ -1,8 +1,6 @@
 """Removes unnecessary queues from the music manager"""
 
-import asyncio
 import logging
-import traceback
 
 import discord
 

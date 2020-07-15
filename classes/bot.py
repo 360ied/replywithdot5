@@ -24,5 +24,3 @@ class Bot:
             await self.client.login(token=self.token, bot=False)
 
         await self.client.connect()
-
-

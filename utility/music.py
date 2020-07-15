@@ -38,7 +38,8 @@ class Piece:
         return self.name
 
     def __copy__(self):
-        return Piece(self.name, self.embed, self.audio_source_getter, self.voice_client, self.text_channel, self.requester)
+        return Piece(self.name, self.embed, self.audio_source_getter, self.voice_client, self.text_channel,
+                     self.requester)
 
     async def initialize_audio_source(self):
         logging.debug("initializing audio source")
@@ -125,7 +126,6 @@ class MusicQueue:
         # Stop the current piece
         # Once the current piece is stopped, the next piece will automatically play
         self.current_piece.stop()
-
 
     def piece_iterator(self):
         """

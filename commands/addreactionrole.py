@@ -42,5 +42,5 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         if "reaction_roles" not in config:
             config["reaction_roles"] = list()
         config["reaction_roles"].append([target_message_id, target_role.id, target_emoji_string])
-        
+
         await message.channel.send("Done!")

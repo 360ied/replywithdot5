@@ -1,7 +1,6 @@
 """Responds with Pong!"""
 import discord
 
-
 description = __doc__
 
 usage = "{prefix}ping"

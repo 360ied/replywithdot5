@@ -1,7 +1,7 @@
 """Persistent Storage V2"""
 import json
-from io import StringIO
 import logging
+from io import StringIO
 
 import discord
 

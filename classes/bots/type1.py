@@ -116,29 +116,31 @@ class Type1(Bot):
             musicplay, musicloop, musicskip, musicdisconnect, musicnowplaying, musicloopqueue
 
         # Sort the dictionary alphabetically by the key
-        command_dict = dict(sorted({
-            "ping": ping,
-            "prefix": setprefix,
-            "setprefix": setprefix,
-            "changeprefix": setprefix,
-            "help": helpcommand,
-            "wolfram": wolframalpha,
-            "wr": wolframalpha,
-            "meaning": meaning,
-            "definition": meaning,
-            "mn": meaning,
-            "df": meaning,
-            "addreactionrole": addreactionrole,
-            "arr": addreactionrole,
-            "play": musicplay,
-            "loop": musicloop,
-            "skip": musicskip,
-            "disconnect": musicdisconnect,
-            "dc": musicdisconnect,
-            "nowplaying": musicnowplaying,
-            "np": musicnowplaying,
-            "loopqueue": musicloopqueue
-        }.items(), key=lambda item: item[0]))
+        command_dict = dict(
+            sorted(
+                {
+                    "ping": ping,
+                    "prefix": setprefix,
+                    "setprefix": setprefix,
+                    "changeprefix": setprefix,
+                    "help": helpcommand,
+                    "wolfram": wolframalpha,
+                    "wr": wolframalpha,
+                    "meaning": meaning,
+                    "definition": meaning,
+                    "mn": meaning,
+                    "df": meaning,
+                    "addreactionrole": addreactionrole,
+                    "arr": addreactionrole,
+                    "play": musicplay,
+                    "loop": musicloop,
+                    "skip": musicskip,
+                    "disconnect": musicdisconnect,
+                    "dc": musicdisconnect,
+                    "nowplaying": musicnowplaying,
+                    "np": musicnowplaying,
+                    "loopqueue": musicloopqueue
+                }.items(), key=lambda item: item[0]))
 
         actions_dict = {
             "on_message": {
