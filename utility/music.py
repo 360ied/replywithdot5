@@ -114,6 +114,20 @@ class MusicQueue:
         """
         self.pieces.appendleft(piece)
 
+    def add_pieces(self, pieces):
+        """
+        :param pieces: An iterable of pieces to add to the queue
+        Adds an iterable of pieces to the end of the queue
+        """
+        self.pieces.extend(pieces)
+
+    def add_pieces_front(self, pieces):
+        """
+        :param pieces: An iterable of pieces to add to the queue
+        Adds an iterable of pieces to the front of the queue
+        """
+        self.pieces.extendleft(pieces)
+
     def remove_piece(self, index):
         """
         :param int index: Index of the piece

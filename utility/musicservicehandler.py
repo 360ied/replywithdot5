@@ -27,18 +27,26 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
                         file.write(chunk)
 
     prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
-    return music.Piece(
+    return [music.Piece(
         query, None, prepared_coroutine, voice_client, text_channel, member
-    )
+    )]
 
 
 async def handler_yt(query, voice_client, text_channel, member, loop):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
     # debug
-    print(video_info)
-    print(type(video_info))
+    logging.debug(video_info)
+    logging.debug(type(video_info))
     with open("latest_json.json", "w") as fp:
         json.dump(video_info, fp)
+
+    # Handle playlists
+    if video_info["extractor"] == "youtube:playlist":
+        to_return = list()
+        async for i in helper_handler_yt_playlist(video_info, voice_client, text_channel, member, loop):
+            to_return.append(i)
+        return to_return
+
     # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
 
     # This will not download anything, as it will have already be downloaded
@@ -46,9 +54,15 @@ async def handler_yt(query, voice_client, text_channel, member, loop):
 
     embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
 
-    return music.Piece(
-        query, embed, prepared_coroutine, voice_client, text_channel, member
-    )
+    return [music.Piece(query, embed, prepared_coroutine, voice_client, text_channel, member)]
+
+
+async def helper_handler_yt_playlist(info, voice_client, text_channel, member, loop):
+    assert info["extractor"] == "youtube:playlist"
+    videos = info["entries"]
+    logging.info(f"Processing playlist of {len(videos)} videos")
+    for i in videos:
+        yield await handler_yt(i["webpage_url"], voice_client, text_channel, member, loop)
 
 
 def helper_ytdl(query, **options):

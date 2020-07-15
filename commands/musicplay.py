@@ -1,4 +1,6 @@
 """Play Audio"""
+import logging
+
 import discord
 
 from utility import music, musicservicehandler
@@ -7,7 +9,8 @@ description = __doc__
 
 usage = "{prefix}play (query) [--dl]\n" \
         "Full list of sites supported: https://ytdl-org.github.io/youtube-dl/supportedsites.html\n" \
-        "If you want to use a direct download, append --dl to the end of the command"
+        "If you want to use a direct download, append --dl to the end of the command\n" \
+        "If you want to play a playlist"
 
 aliases = {
     "query": "query",
@@ -44,14 +47,15 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
     try:
         handler = getattr(musicservicehandler, f"handler_{service}")
     except AttributeError:
-        await message.channel.send("Invalid service!")
+        logging.error(f"UNEXPECTED SERVICE: {service}")
+        await message.channel.send("If you are seeing this message, something has gone horribly wrong.")
         return "Invalid Service"
 
-    piece = await handler(query, music_queue.voice_client, message.channel, message.author, client.loop)
+    pieces = await handler(query, music_queue.voice_client, message.channel, message.author, client.loop)
 
-    music_queue.add_piece(piece)
+    music_queue.add_pieces(pieces)
 
-    await message.channel.send("Added to queue!", embed=piece.embed)
+    await message.channel.send(f"Added {len(pieces)} pieces to queue!")
 
     client.loop.create_task(music_queue.player())
 
