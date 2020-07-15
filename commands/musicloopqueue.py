@@ -31,7 +31,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         return "There is nothing playing!"
 
     queue.looping_queue = not queue.looping_queue
-    if queue.looping_current_piece:
+    if queue.looping_queue:
         await message.channel.send("Now looping queue")
     else:
         await message.channel.send("No longer looping queue")
