@@ -34,7 +34,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         i: music.Piece
         embed.add_field(
             name=f"{c + 1}:",
-            value=f"{queue.current_piece.embed.title} - Requested By {str(queue.current_piece.requester)}",
+            value=f"{i.embed.title} - Requested By {str(i.requester)}",
             inline=False
         )
 
