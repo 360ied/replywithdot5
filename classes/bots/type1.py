@@ -7,7 +7,7 @@ import discord
 from actions.on_raw_reaction_add import reactionroleassigner
 from actions.on_voice_state_update import remove_queue
 from classes.bot import Bot
-from tasks.on_connect import status, persistentstorageautoupdate
+from tasks.on_connect import staticstatus, persistentstorageautoupdate
 from utility import blib
 from utility.music import MusicManager
 from utility.persistentstoragev2 import PersistentStorage
@@ -104,7 +104,7 @@ class Type1(Bot):
 
         task_dict = {
             "on_connect": [
-                status.run(self.client, "New Music Commands! (In Heavy Development)"),
+                staticstatus.run(self.client, "New Music Commands! (In Heavy Development)"),
                 persistentstorageautoupdate.run(self.client)
             ]
         }
