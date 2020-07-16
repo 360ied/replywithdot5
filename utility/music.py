@@ -158,11 +158,11 @@ class MusicQueue:
                 continue
             # Looping current piece goes first as it overrides looping the queue
             if self.looping_current_piece:
-                # Do nothing, since the looping piece is already the current piece
-                pass
+                # Reinitialize the piece 
+                self.current_piece = copy.copy(self.current_piece)
             elif self.looping_queue:
                 # Rotate the pieces, looping queue, so add the current piece back into the queue
-                self.add_piece(self.current_piece)
+                self.add_piece(copy.copy(self.current_piece))
                 self.current_piece = self.pieces.popleft()
                 # Rotate to the left by 1 to put the current piece at the end of the queue
                 #  self.pieces.rotate(-1)
