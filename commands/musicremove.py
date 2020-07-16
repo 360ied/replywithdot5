@@ -37,8 +37,8 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         await message.channel.send("There is nothing playing!")
         return "There is nothing playing!"
 
-    index = int(args["index"]) - 1
+    index = int(args["index"])
 
     queue: MusicQueue
-    queue.remove_piece(index)  # Arrays start at 0
+    queue.remove_piece(index - 1)  # Arrays start at 0
     await message.channel.send(f"Removed piece number {index}")
