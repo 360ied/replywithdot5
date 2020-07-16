@@ -1,7 +1,9 @@
 import hashlib
+import json
 import logging
 import pathlib
 import re
+import traceback
 from os import getenv
 
 import aiohttp
@@ -41,6 +43,13 @@ async def handler_yt(query, voice_client, text_channel, member, loop, pack=True)
     # with open("latest_json.json", "w") as fp:
     #     json.dump(video_info, fp)
 
+    if video_info is None:
+        # Could not find query
+        logging.error(f"Could not find {query}")
+        await text_channel.send(f"Could not find {query}\n"
+                                f"Skipping!")
+        return None
+
     # Handle playlists
     if video_info["extractor"] == "youtube:playlist":
         to_return = list()
@@ -53,7 +62,14 @@ async def handler_yt(query, voice_client, text_channel, member, loop, pack=True)
     # This will not download anything, as it will have already be downloaded
     prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
 
-    embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
+    try:
+        embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
+    except Exception:
+        traceback.print_exc()
+        with open("latest_json.json", "w") as fp:
+            json.dump(video_info, fp)
+        logging.error("Error! Trying again")
+        return await handler_yt(query, voice_client, text_channel, member, loop, pack=pack)
 
     piece = music.Piece(query, embed, prepared_coroutine, voice_client, text_channel, member)
 
@@ -129,5 +145,7 @@ async def handler_spotify(query, voice_client, text_channel, member, loop):
 
             for i in res:
                 songs.append(i['track']['name'] + ' ' + i['track']['artists'][0]['name'])
+
+    logging.info(str(songs))
 
     return [await handler_yt(i, voice_client, text_channel, member, loop, pack=False) for i in songs]

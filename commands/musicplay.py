@@ -62,9 +62,14 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     pieces = await handler(query, music_queue.voice_client, message.channel, message.author, client.loop)
 
-    music_queue.add_pieces(pieces)
+    filtered_pieces = list()
+    for i in pieces:
+        if isinstance(i, music.Piece):
+            filtered_pieces.append(i)
 
-    await message.channel.send(f"Added {len(pieces)} pieces to queue!")
+    music_queue.add_pieces(filtered_pieces)
+
+    await message.channel.send(f"Added {len(filtered_pieces)} pieces to queue!")
 
     client.loop.create_task(music_queue.player())
 
