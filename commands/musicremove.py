@@ -1,4 +1,4 @@
-"""Skip the current piece"""
+"""Remove a piece from the queue"""
 import discord
 
 from utility import music
@@ -6,15 +6,21 @@ from utility.music import MusicQueue
 
 description = __doc__
 
-usage = "{prefix}skip\n"
+usage = "{prefix}remove (index)\n"
 
-aliases = dict()
+aliases = {
+    "index": "index"
+}
 
-required_parameters = set()
+required_parameters = {
+    "index"
+}
 
 required_permissions = set()
 
-expected_positional_parameters = list()
+expected_positional_parameters = {
+    "index"
+}
 
 
 async def run(client: discord.Client, group, message: discord.Message, args: dict):
@@ -31,6 +37,8 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         await message.channel.send("There is nothing playing!")
         return "There is nothing playing!"
 
+    index = int(args["index"]) - 1
+
     queue: MusicQueue
-    queue.skip_current_piece()
-    await message.channel.send("Skipped current piece")
+    queue.remove_piece(index)  # Arrays start at 0
+    await message.channel.send(f"Removed piece number {index}")
