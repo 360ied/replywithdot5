@@ -1,13 +1,13 @@
 import hashlib
-import json
 import logging
 import pathlib
+import re
+from os import getenv
 
 import aiohttp
 import youtube_dl
-from spotdl.helpers.spotify import SpotifyHelpers
 
-from utility import blib, music, ytdlhelper
+from utility import blib, music, ytdlhelper, spotify
 
 cache_folder = "cache/"
 
@@ -36,10 +36,10 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
 async def handler_yt(query, voice_client, text_channel, member, loop, pack=True):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
     # debug
-    logging.debug(video_info)
-    logging.debug(type(video_info))
-    with open("latest_json.json", "w") as fp:
-        json.dump(video_info, fp)
+    # logging.debug(video_info)
+    # logging.debug(type(video_info))
+    # with open("latest_json.json", "w") as fp:
+    #     json.dump(video_info, fp)
 
     # Handle playlists
     if video_info["extractor"] == "youtube:playlist":
@@ -93,14 +93,41 @@ def helper_ytdl(query, **options):
     return output
 
 
-spotify_helper = SpotifyHelpers()
+spotify = spotify.Spotify(getenv("spotify_client_id"), getenv("spotify_client_secret"))
 
 
+# Modified from https://github.com/Just-Some-Bots/MusicBot/blob/master/musicbot/bot.py
 async def handler_spotify(query, voice_client, text_channel, member, loop):
-    await loop.run_in_executor(None, helper_spotify, query)
+    if 'open.spotify.com' in query:
+        modq = 'spotify:' + re.sub('(http[s]?:\/\/)?(open.spotify.com)\/', '', query).replace('/', ':')
+        # remove session id (and other query stuff)
+        modq = re.sub('\?.*', '', modq)
+    else:
+        modq = query
 
+    songs = list()
 
-def helper_spotify(uri):
-    response = spotify_helper.fetch_playlist(uri)
-    with open("latest_json.json", "w") as fp:
-        json.dump(response, fp)
+    if modq.startswith('spotify:'):
+        parts = modq.split(":")
+        if 'track' in parts:
+            res = await spotify.get_track(parts[-1])
+            songs.append(res['artists'][0]['name'] + ' ' + res['name'])
+        elif 'album' in parts:
+            res = await spotify.get_album(parts[-1])
+            for i in res['tracks']['items']:
+                songs.append(i['name'] + ' ' + i['artists'][0]['name'])
+        elif 'playlist' in parts:
+            res = []
+            r = await spotify.get_playlist_tracks(parts[-1])
+            while True:
+                res.extend(r['items'])
+                if r['next'] is not None:
+                    r = await spotify.make_spotify_req(r['next'])
+                    continue
+                else:
+                    break
+
+            for i in res:
+                songs.append(i['track']['name'] + ' ' + i['track']['artists'][0]['name'])
+
+    return [await handler_yt(i, voice_client, text_channel, member, loop, pack=False) for i in songs]

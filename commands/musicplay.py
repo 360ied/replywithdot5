@@ -51,6 +51,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
     for i in service_flags:
         if i in args:
             service = i
+            break
 
     try:
         handler = getattr(musicservicehandler, f"handler_{service}")
