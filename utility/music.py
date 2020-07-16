@@ -42,22 +42,23 @@ class Piece:
                      self.requester)
 
     async def initialize_audio_source(self):
-        logging.debug("initializing audio source")
+        # logging.debug("initializing audio source")
         self.audio_source = await self.audio_source_getter.run()
 
     async def play(self):
         """Play the audio source"""
         if self.audio_source is None:
             await self.initialize_audio_source()
-            logging.debug("done init audio source")
-        logging.debug(self.name)
-        logging.debug(self.voice_client)
-        logging.debug(type(self.voice_client))
+            # logging.debug("done init audio source")
+        # logging.debug(self.name)
+        # logging.debug(self.voice_client)
+        # logging.debug(type(self.voice_client))
         try:
             self.voice_client.play(self.audio_source)
         except TypeError:
-            logging.debug("TypeError")
-        logging.debug("IM HERE")
+            # logging.debug("TypeError")
+            pass
+        # logging.debug("IM HERE")
         # await asyncio.sleep(10)
         while self.voice_client.is_playing() or self.voice_client.is_paused():
             # logging.info(self.voice_client.is_playing())
