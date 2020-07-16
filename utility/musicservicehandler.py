@@ -127,11 +127,11 @@ async def handler_spotify(query, voice_client, text_channel, member, loop):
         parts = modq.split(":")
         if 'track' in parts:
             res = await spotify.get_track(parts[-1])
-            songs.append(res['artists'][0]['name'] + ' ' + res['name'])
+            songs.append(f"{res['artists'][0]['name']} {res['name']}")
         elif 'album' in parts:
             res = await spotify.get_album(parts[-1])
             for i in res['tracks']['items']:
-                songs.append(i['name'] + ' ' + i['artists'][0]['name'])
+                songs.append(f"{i['artists'][0]['name']} {i['name']}")
         elif 'playlist' in parts:
             res = []
             r = await spotify.get_playlist_tracks(parts[-1])
@@ -144,7 +144,7 @@ async def handler_spotify(query, voice_client, text_channel, member, loop):
                     break
 
             for i in res:
-                songs.append(i['track']['name'] + ' ' + i['track']['artists'][0]['name'])
+                songs.append(f"{i['track']['artists'][0]['name']} {i['track']['name']}")
 
     logging.info(str(songs))
 
