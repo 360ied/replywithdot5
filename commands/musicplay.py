@@ -73,7 +73,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     await message.channel.send(f"Added {len(filtered_pieces)} pieces to queue!")
 
-    if not "np" in args:
+    if "np" not in args:
         client.loop.create_task(music_queue.player())
 
     return "Success"
