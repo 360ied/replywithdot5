@@ -1,1 +1,11 @@
-{"_type": "playlist", "entries": [null], "id": "NO FUN Joji", "extractor": "youtube:search", "webpage_url": "ytsearch:NO FUN Joji", "webpage_url_basename": "NO FUN Joji", "extractor_key": "YoutubeSearch"}
+{
+  "_type": "playlist",
+  "entries": [
+    null
+  ],
+  "id": "NO FUN Joji",
+  "extractor": "youtube:search",
+  "webpage_url": "ytsearch:NO FUN Joji",
+  "webpage_url_basename": "NO FUN Joji",
+  "extractor_key": "YoutubeSearch"
+}

@@ -1,10 +1,11 @@
 # https://raw.githubusercontent.com/Just-Some-Bots/MusicBot/master/musicbot/spotify.py
 
-import aiohttp
 import asyncio
 import base64
 import logging
 import time
+
+import aiohttp
 
 log = logging.getLogger(__name__)
 
