@@ -82,12 +82,7 @@ class Type1(Bot):
 
                         async with message.channel.typing():
                             try:
-                                await command.run(
-                                    self,
-                                    group,
-                                    message,
-                                    mapped_arguments
-                                )
+                                await command.run(self, group, message, mapped_arguments)
                             except Exception as e:
                                 traceback.print_exc()
                                 await message.channel.send(f"{type(e).__name__}: {str(e)}")
