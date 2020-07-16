@@ -7,14 +7,16 @@ from utility import music, musicservicehandler
 
 description = __doc__
 
-usage = "{prefix}play (query) [--dl]\n" \
+usage = "{prefix}play (query) [--dl] [--np]\n" \
         "Full list of sites supported: https://ytdl-org.github.io/youtube-dl/supportedsites.html\n" \
         "If you want to use a direct download, append --dl to the end of the command\n" \
-        "Please do not play 10 hour videos or overly long playlists, they will take forever to load."
+        "Please do not play 10 hour videos or overly long playlists, they will take forever to load.\n" \
+        "Add --np to the end of the command if you do not want it to automatically play the songs once added"
 
 aliases = {
     "query": "query",
-    "dl": "dl"
+    "dl": "dl",
+    "np": "np"
 }
 
 required_parameters = {
@@ -71,6 +73,7 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     await message.channel.send(f"Added {len(filtered_pieces)} pieces to queue!")
 
-    client.loop.create_task(music_queue.player())
+    if not "np" in args:
+        client.loop.create_task(music_queue.player())
 
     return "Success"
