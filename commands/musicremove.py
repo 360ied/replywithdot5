@@ -18,9 +18,9 @@ required_parameters = {
 
 required_permissions = set()
 
-expected_positional_parameters = {
+expected_positional_parameters = [
     "index"
-}
+]
 
 
 async def run(client: discord.Client, group, message: discord.Message, args: dict):
