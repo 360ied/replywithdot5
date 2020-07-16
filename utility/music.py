@@ -133,7 +133,7 @@ class MusicQueue:
         :param int index: Index of the piece
         :raises IndexError: If the index is invalid
         """
-        self.pieces.pop(index)
+        self.pieces.remove(index)
 
     def skip_current_piece(self):
         """Skip the current piece"""
