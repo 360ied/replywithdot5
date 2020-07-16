@@ -109,7 +109,7 @@ class Type1(Bot):
         # Commands are imported here to create separate instances for each bot
         from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole, \
             musicplay, musicloop, musicskip, musicdisconnect, musicnowplaying, musicloopqueue, musicviewqueue, \
-            musicremove, musicpause, musicresume
+            musicremove, musicpause, musicresume, musicshuffle
 
         # Sort the dictionary alphabetically by the key
         command_dict = dict(
@@ -142,7 +142,9 @@ class Type1(Bot):
                     "remove": musicremove,
                     "r": musicremove,
                     "pause": musicpause,
-                    "resume": musicresume
+                    "resume": musicresume,
+                    "shuffle": musicshuffle,
+                    "randomize": musicshuffle
                 }.items(), key=lambda item: item[0]))
 
         actions_dict = {
