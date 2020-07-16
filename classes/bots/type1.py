@@ -113,7 +113,7 @@ class Type1(Bot):
 
         # Commands are imported here to create separate instances for each bot
         from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole, \
-            musicplay, musicloop, musicskip, musicdisconnect, musicnowplaying, musicloopqueue, musicviewqueue,\
+            musicplay, musicloop, musicskip, musicdisconnect, musicnowplaying, musicloopqueue, musicviewqueue, \
             musicremove, musicpause, musicresume
 
         # Sort the dictionary alphabetically by the key
