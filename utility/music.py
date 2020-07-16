@@ -59,7 +59,7 @@ class Piece:
             logging.debug("TypeError")
         logging.debug("IM HERE")
         # await asyncio.sleep(10)
-        while self.voice_client.is_playing():
+        while self.voice_client.is_playing() or self.voice_client.is_paused():
             # logging.info(self.voice_client.is_playing())
             await asyncio.sleep(.1)
 
