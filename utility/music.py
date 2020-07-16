@@ -158,7 +158,7 @@ class MusicQueue:
                 continue
             # Looping current piece goes first as it overrides looping the queue
             if self.looping_current_piece:
-                # Reinitialize the piece 
+                # Reinitialize the piece
                 self.current_piece = copy.copy(self.current_piece)
             elif self.looping_queue:
                 # Rotate the pieces, looping queue, so add the current piece back into the queue
