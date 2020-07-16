@@ -5,6 +5,7 @@ import pathlib
 
 import aiohttp
 import youtube_dl
+from spotdl.helpers.spotify import SpotifyHelpers
 
 from utility import blib, music, ytdlhelper
 
@@ -90,3 +91,16 @@ def helper_ytdl(query, **options):
     # ytdl.download([query])
     output = ytdl.extract_info(query, download=True)
     return output
+
+
+spotify_helper = SpotifyHelpers()
+
+
+async def handler_spotify(query, voice_client, text_channel, member, loop):
+    await loop.run_in_executor(None, helper_spotify, query)
+
+
+def helper_spotify(uri):
+    response = spotify_helper.fetch_playlist(uri)
+    with open("latest_json.json", "w") as fp:
+        json.dump(response, fp)
