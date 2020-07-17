@@ -74,7 +74,7 @@ class MenuManager:
     def register_menu(self, menu):
         self.menu_getter[menu.message.id] = menu
 
-    def on_reaction_add(self, client, raw_reaction_action_event):
+    async def on_reaction_add(self, client, raw_reaction_action_event):
         """
         :param discord.Client client:
         :param discord.RawReactionActionEvent raw_reaction_action_event:
