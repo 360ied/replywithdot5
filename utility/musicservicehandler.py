@@ -35,7 +35,7 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
     )]
 
 
-async def handler_yt(query, voice_client, text_channel, member, loop, pack=True):
+async def handler_yt(query, voice_client, text_channel, member, loop, pack=True, playlists=True):
     video_info = await loop.run_in_executor(None, helper_ytdl, query)
     # debug
     # logging.debug(video_info)
@@ -51,7 +51,7 @@ async def handler_yt(query, voice_client, text_channel, member, loop, pack=True)
         return None
 
     # Handle playlists
-    if video_info["extractor"] == "youtube:playlist":
+    if video_info["extractor"] == "youtube:playlist" and playlists:
         to_return = list()
         async for i in helper_handler_yt_playlist(video_info, voice_client, text_channel, member, loop):
             to_return.append(i)
@@ -84,7 +84,7 @@ async def helper_handler_yt_playlist(info, voice_client, text_channel, member, l
     videos = info["entries"]
     logging.info(f"Processing playlist of {len(videos)} videos")
     for i in videos:
-        yield await handler_yt(i["webpage_url"], voice_client, text_channel, member, loop, pack=False)
+        yield await handler_yt(i["webpage_url"], voice_client, text_channel, member, loop, pack=False, playlists=False)
 
 
 def helper_ytdl(query, **options):
@@ -148,4 +148,4 @@ async def handler_spotify(query, voice_client, text_channel, member, loop):
 
     logging.info(str(songs))
 
-    return [await handler_yt(i, voice_client, text_channel, member, loop, pack=False) for i in songs]
+    return [await handler_yt(i, voice_client, text_channel, member, loop, pack=False, playlists=False) for i in songs]
