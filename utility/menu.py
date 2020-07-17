@@ -82,5 +82,6 @@ class MenuManager:
         """
         if raw_reaction_action_event.message_id in self.menu_getter:
             if str(raw_reaction_action_event.emoji) in emotes_list:
-                await self.menu_getter[raw_reaction_action_event.message_id].emote_to_func[
-                    str(raw_reaction_action_event.emoji)]()
+                menu = self.menu_getter[raw_reaction_action_event.message_id]
+                if menu.operator_check(raw_reaction_action_event.member):
+                    await menu.emote_to_func[str(raw_reaction_action_event.emoji)]()
