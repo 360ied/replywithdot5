@@ -342,3 +342,11 @@ class PreparedCoroutine:
 def format_time(**kwargs):
     """Format time string"""
     return str(datetime.timedelta(**kwargs))
+
+
+class WrappedTuple(tuple):
+    """Tuple with indexes that wrap around"""
+
+    def __getitem__(self, item):
+        item = item % len(self)
+        return super().__getitem__(item)

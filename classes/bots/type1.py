@@ -9,6 +9,7 @@ from actions.on_voice_state_update import remove_queue
 from classes.bot import Bot
 from tasks.on_connect import staticstatus, persistentstorageautoupdate
 from utility import blib
+from utility.menu import MenuManager
 from utility.music import MusicManager
 from utility.persistentstoragev2 import PersistentStorage
 
@@ -25,6 +26,7 @@ class Type1(Bot):
                 self.persistent_storage = None
                 self.command_dict = None
                 self.music_manager = MusicManager()
+                self.menu_manager = MenuManager()
 
             async def on_connect(self):
                 self.command_dict = command_dict
@@ -89,11 +91,12 @@ class Type1(Bot):
 
             async def on_raw_reaction_add(self, payload):
                 for i in actions_dict["on_raw_reaction_add"]:
-                    self.loop.create_task(i.run(self, payload))
+                    self.loop.create_task(i(self, payload))
 
             async def on_voice_state_update(self, member, before, after):
                 for i in actions_dict["on_voice_state_update"]:
-                    self.loop.create_task(i.run(self, member, before, after))
+                    # noinspection PyArgumentList
+                    self.loop.create_task(i(self, member, before, after))
 
         self.client = Client()
 
@@ -151,10 +154,11 @@ class Type1(Bot):
             "on_message": {
             },
             "on_raw_reaction_add": {
-                reactionroleassigner
+                reactionroleassigner.run,
+                self.client.menu_manager.on_reaction_add
             },
             "on_voice_state_update": {
-                remove_queue
+                remove_queue.run
             }
         }
 
