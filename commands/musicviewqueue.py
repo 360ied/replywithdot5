@@ -45,6 +45,12 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
             embed = discord.Embed()
             embed.title = f"Current Piece: {queue.current_piece.embed.title} - Requested By {str(queue.current_piece.requester)} - Part {len(parts)}"
             embed.set_footer(text=f"Requested by {str(message.author)}", icon_url=str(message.author.avatar_url))
+        else:
+            embed.add_field(
+                name=f"{c + 1}:",
+                value=f"{i.embed.title} - Requested By {str(i.requester)}",
+                inline=False
+            )
 
     parts.append(embed)
 
