@@ -41,10 +41,16 @@ class Menu:
             await self.message.add_reaction(i)
 
     async def remove_other_reactions(self):
-        for i in self.message.reactions:
+        # The length is zero for some reason
+        """for i in self.message.reactions:
+            print(i)
             async for ii in i.users():
+                print(ii)
                 if not self.me.id == ii.id:
-                    await i.remove(ii)
+                    await i.remove(ii)"""
+
+        await self.message.clear_reactions()
+        await self.add_reaction_menu()
 
     async def set_page(self, index):
         await self.message.edit(embed=self.pages[index])
