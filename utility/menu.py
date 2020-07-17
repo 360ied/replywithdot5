@@ -80,6 +80,8 @@ class MenuManager:
         :param discord.RawReactionActionEvent raw_reaction_action_event:
         Applies menu changes upon event
         """
+        if raw_reaction_action_event.member.id == client.user.id:
+            return
         if raw_reaction_action_event.message_id in self.menu_getter:
             if str(raw_reaction_action_event.emoji) in emotes_list:
                 menu = self.menu_getter[raw_reaction_action_event.message_id]
