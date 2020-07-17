@@ -35,48 +35,53 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
     )]
 
 
-async def handler_yt(query, voice_client, text_channel, member, loop, pack=True, playlists=True):
-    video_info = await loop.run_in_executor(None, helper_ytdl, query)
-    # debug
-    # logging.debug(video_info)
-    # logging.debug(type(video_info))
-    # with open("latest_json.json", "w") as fp:
-    #     json.dump(video_info, fp)
+async def handler_yt(query, voice_client, text_channel, member, loop, pack=True, playlists=True, retries=3):
+    for i in range(retries):
+        video_info = await loop.run_in_executor(None, helper_ytdl, query)
+        # debug
+        # logging.debug(video_info)
+        # logging.debug(type(video_info))
+        # with open("latest_json.json", "w") as fp:
+        #     json.dump(video_info, fp)
 
-    if video_info is None:
-        # Could not find query
-        logging.error(f"Could not find {query}")
-        await text_channel.send(f"Could not find {query}\n"
-                                f"Skipping!")
-        return None
+        if video_info is None:
+            # Could not find query
+            logging.error(f"Could not find {query}")
+            await text_channel.send(f"Could not find {query}\n"
+                                    f"Skipping!")
+            return None
 
-    # Handle playlists
-    if video_info["extractor"] == "youtube:playlist" and playlists:
-        to_return = list()
-        async for i in helper_handler_yt_playlist(video_info, voice_client, text_channel, member, loop):
-            to_return.append(i)
-        return to_return
+        # Handle playlists
+        if video_info["extractor"] == "youtube:playlist" and playlists:
+            to_return = list()
+            async for i in helper_handler_yt_playlist(video_info, voice_client, text_channel, member, loop):
+                to_return.append(i)
+            return to_return
 
-    # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
+        # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
 
-    # This will not download anything, as it will have already be downloaded
-    prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
+        # This will not download anything, as it will have already be downloaded
+        prepared_coroutine = blib.PreparedCoroutine(blib.audio_getter_creator, query)
 
-    try:
-        embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
-    except Exception:
-        traceback.print_exc()
-        with open("latest_json.json", "w") as fp:
-            json.dump(video_info, fp)
-        logging.error("Error! Trying again")
-        return await handler_yt(query, voice_client, text_channel, member, loop, pack=pack)
+        try:
+            embed = ytdlhelper.parse(video_info, query, voice_client, text_channel, member, loop)
+        except Exception:
+            traceback.print_exc()
+            with open("latest_json.json", "w") as fp:
+                json.dump(video_info, fp)
+            logging.error("Error! Trying again")
+            # return await handler_yt(query, voice_client, text_channel, member, loop, pack=pack)
+            continue
 
-    piece = music.Piece(query, embed, prepared_coroutine, voice_client, text_channel, member)
+        piece = music.Piece(query, embed, prepared_coroutine, voice_client, text_channel, member)
 
-    if pack:
-        return [piece]
-    else:
-        return piece
+        if pack:
+            return [piece]
+        else:
+            return piece
+
+    logging.error(f"Failed getting video info {retries} times!")
+    return None
 
 
 async def helper_handler_yt_playlist(info, voice_client, text_channel, member, loop):
