@@ -3,6 +3,7 @@ import discord
 
 from utility import music
 from utility.music import MusicQueue
+from utility.menu import Menu
 
 description = __doc__
 
@@ -27,17 +28,26 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         await message.channel.send("There is nothing playing!")
         return "There is nothing playing!"
 
+    parts = list()
+
     embed = discord.Embed()
     embed.title = f"Current Piece: {queue.current_piece.embed.title} - Requested By {str(queue.current_piece.requester)}"
     embed.set_footer(text=f"Requested by {str(message.author)}", icon_url=str(message.author.avatar_url))
     for c, i in enumerate(queue.pieces):
         i: music.Piece
-        embed.add_field(
+        if len(embed.copy().add_field(
             name=f"{c + 1}:",
             value=f"{i.embed.title} - Requested By {str(i.requester)}",
             inline=False
-        )
+        )) > 6000:
+            parts.append(embed)
 
-    # Be careful of Discord's 6000 character limit for embeds
+            embed = discord.Embed()
+            embed.title = f"Current Piece: {queue.current_piece.embed.title} - Requested By {str(queue.current_piece.requester)} - Part {len(parts)}"
+            embed.set_footer(text=f"Requested by {str(message.author)}", icon_url=str(message.author.avatar_url))
 
-    await message.channel.send(embed=embed)
+    parts.append(embed)
+
+    # Send the menu
+    # noinspection PyUnresolvedReferences
+    await Menu(client.user, message.channel, parts, client.menu_manager).send()

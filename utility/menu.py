@@ -8,7 +8,7 @@ class Menu:
 
     def __init__(self, me, channel, pages, menu_manager, operator_check=lambda x: True, current_index=0, message=None):
         """
-        :param discord.Member me:
+        :param discord.User me:
         :param discord.TextChannel channel:
         :param pages: iterable of embeds, or just one embed if you want automatic splitting
         :param MenuManager menu_manager:
