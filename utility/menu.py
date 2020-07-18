@@ -42,12 +42,12 @@ class Menu:
 
     async def remove_other_reactions(self):
         # The length is zero for some reason
-        """for i in self.message.reactions:
-            print(i)
-            async for ii in i.users():
-                print(ii)
-                if not self.me.id == ii.id:
-                    await i.remove(ii)"""
+        # for i in self.message.reactions:
+        #      print(i)
+        #     async for ii in i.users():
+        #        print(ii)
+        #         if not self.me.id == ii.id:
+        #             await i.remove(ii)
 
         await self.message.clear_reactions()
         await self.add_reaction_menu()
