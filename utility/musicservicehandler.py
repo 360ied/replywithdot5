@@ -35,7 +35,7 @@ async def handler_dl(query, voice_client, text_channel, member, loop):
     )]
 
 
-async def handler_yt(query, voice_client, text_channel, member, loop, pack=True, playlists=True, retries=3):
+async def handler_yt(query, voice_client, text_channel, member, loop, pack=True, playlists=True, retries=2):
     for i in range(retries):
         video_info = await loop.run_in_executor(None, helper_ytdl, query)
         # debug
