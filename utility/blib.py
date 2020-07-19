@@ -240,10 +240,10 @@ def command_argument_parser(
                 current_argument_value)
         else:
             # Set by positional argument
-            # Allow the last positional argument to have spaces in between
+            # Allow the last positional argument to have the separator in between
             if current_position >= len(expected_positional_arguments):
                 if expected_positional_arguments[-1] in return_arguments:
-                    return_arguments[expected_positional_arguments[-1]] += f" {current_item}"
+                    return_arguments[expected_positional_arguments[-1]] += string_separator + current_item
                 else:
                     return_arguments[expected_positional_arguments[-1]] = current_item
             else:
@@ -302,7 +302,7 @@ async def get_voice_client(voice_channel, timeout=60, reconnect=True):
 
 alphanumerical = "abcdefghijklmnopqrstuvwxyz1234567890"
 
-one_megabyte_chunk_size = 1024 * 1024
+one_megabyte_chunk_size = 1048576  # 1024^2
 
 
 async def audio_getter_creator(url):
@@ -334,7 +334,6 @@ class PreparedCoroutine:
         self.args = args
         self.kwargs = kwargs
 
-    # @property
     def run(self):
         return self.func(*self.args, **self.kwargs)
 
