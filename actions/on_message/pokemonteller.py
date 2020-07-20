@@ -38,7 +38,8 @@ async def run(client: discord.Client, message: discord.Message):
 
     search_result = await search_google_images(message.embeds[0].image.url)
 
-    search_result_text = (''.join(s.findAll(text=True)) for s in BeautifulSoup(search_result).findAll('div'))
+    search_result_text = (''.join(s.findAll(text=True))
+                          for s in BeautifulSoup(search_result, features="lxml").findAll('div'))
 
     counter = Counter((x.rstrip(punctuation).casefold() for y in search_result_text for x in y.split()))
 
