@@ -30,7 +30,7 @@ class Type1(Bot):
                 self.menu_manager = MenuManager()
                 self.multi_instance_manager: MultiInstanceManager
 
-            async def on_connect(self):
+            async def on_ready(self):
                 self.multi_instance_manager = MultiInstanceManager(self)
 
                 await self.multi_instance_manager.checker()
