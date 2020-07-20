@@ -6,7 +6,7 @@ import discord
 
 description = __doc__
 
-usage = "{prefix}kill\n"
+usage = "{prefix}ow_kill\n"
 
 aliases = dict()
 
