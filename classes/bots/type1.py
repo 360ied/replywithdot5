@@ -3,16 +3,16 @@ from os import environ
 
 import discord
 
-# from actions.on_message import
+from actions.on_message import pokemonteller
 from actions.on_raw_reaction_add import reactionroleassigner
 from actions.on_voice_state_update import remove_queue
 from classes.bot import Bot
 from tasks.on_connect import staticstatus, persistentstorageautoupdate
 from utility import blib
 from utility.menu import MenuManager
+from utility.multiinstancemanager import MultiInstanceManager
 from utility.music import MusicManager
 from utility.persistentstoragev2 import PersistentStorage
-from utility.multiinstancemanager import MultiInstanceManager
 
 
 class Type1(Bot):
@@ -167,6 +167,7 @@ class Type1(Bot):
 
         actions_dict = {
             "on_message": {
+                pokemonteller.run
             },
             "on_raw_reaction_add": {
                 reactionroleassigner.run,

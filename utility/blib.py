@@ -1,7 +1,6 @@
 """BrianLib"""
 import datetime
 import hashlib
-import os
 import re
 
 import aiohttp
@@ -359,3 +358,39 @@ async def fetch_latest_message(text_channel: discord.TextChannel) -> discord.Mes
 def get_snowflake_epoch(snowflake: int) -> int:
     """Returns UTC time from a Discord snowflake"""
     return ((snowflake >> 22) + 1420070400000) // 1000
+
+
+async def search_google_images(
+        image_url,
+        user_agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0"
+):
+    """
+    :param image_url: a str or URL object
+    :param str user_agent: the user agent to use
+    :return: The response in bytes
+    """
+    async with aiohttp.ClientSession() as session:
+        async with session.get(
+                f"http://www.google.com/searchbyimage?image_url={image_url}",
+                headers={
+                    "User-Agent": user_agent
+                },
+                allow_redirects=True
+        ) as response:
+            return await response.read()
+
+
+def counter_confidence_with_word_list(counter, word_list):
+    """
+    :param collections.Counter counter:
+    :param word_list: Any Iterable
+    :return: A list containing the percentage of how common the word is compared to the total of all the words
+    """
+    total_count = 0
+    for element, count in counter.most_common():
+        if element in word_list:
+            total_count += count
+
+    return [[element, count, 100 * (count / total_count)]
+            for element, count in counter.most_common()
+            if element in word_list]
