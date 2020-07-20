@@ -26,7 +26,8 @@ class MultiInstanceManager:
         :param int retry_seconds:
         :param int status_seconds:
         """
-
+        print(status_channel_id)
+        print(type(status_channel_id))
         self.client = client
         self.status_channel_id = status_channel_id
         self.timeout_seconds = timeout_seconds
@@ -36,6 +37,9 @@ class MultiInstanceManager:
         self.status_channel = self.client.get_channel(self.status_channel_id)
 
     async def am_i_only_instance(self):
+        self.status_channel = self.client.get_channel(self.status_channel_id)
+        print(self.status_channel)
+        print(type(self.status_channel))
         latest_message = await fetch_latest_message(self.status_channel)
         latest_message_epoch = get_snowflake_epoch(latest_message.id)
 
@@ -62,4 +66,4 @@ class MultiInstanceManager:
     async def claimer(self):
         while True:
             await self.status_channel.send(username)
-            await sleep(self.status_channel)
+            await sleep(self.status_seconds)
