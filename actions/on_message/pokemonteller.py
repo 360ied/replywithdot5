@@ -35,7 +35,7 @@ async def run(client: discord.Client, message: discord.Message):
     if len(message.embeds) == 0:
         return
     title = message.embeds[0].title
-    if "wild" in title and ("pokémon" in title or "pokemon" in title):
+    if not ("wild" in title and ("pokémon" in title or "pokemon" in title)):
         return
     if message.embeds[0].image == discord.Embed.Empty:
         return
