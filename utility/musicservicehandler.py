@@ -54,8 +54,8 @@ async def handler_yt(query, voice_client, text_channel, member, loop, pack=True,
         # Handle playlists
         if video_info["extractor"] == "youtube:playlist" and playlists:
             to_return = list()
-            async for i in helper_handler_yt_playlist(video_info, voice_client, text_channel, member, loop):
-                to_return.append(i)
+            async for ii in helper_handler_yt_playlist(video_info, voice_client, text_channel, member, loop):
+                to_return.append(ii)
             return to_return
 
         # link = f"https://youtube.com/watch?v={video_info['entries'][0]['id']}"
