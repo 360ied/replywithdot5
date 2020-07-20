@@ -1,6 +1,7 @@
 """
 Tells pokemon names
 """
+import logging
 from collections import Counter
 from string import punctuation
 
@@ -27,6 +28,8 @@ def get_pokemon_names() -> set:
 
 pokemon_names = get_pokemon_names()
 
+logging.info(f"{len(pokemon_names)} pokemon names found.")
+
 
 async def run(client: discord.Client, message: discord.Message):
     if len(message.embeds) == 0:
@@ -35,6 +38,8 @@ async def run(client: discord.Client, message: discord.Message):
         return
     if message.embeds[0].image == discord.Embed.Empty:
         return
+
+    logging.info(f"Detected spawn in {str(message.channel)}")
 
     search_result = await search_google_images(message.embeds[0].image.url)
 
@@ -47,6 +52,8 @@ async def run(client: discord.Client, message: discord.Message):
 
     for element, count, percentage in counter_confidence_with_word_list(counter, pokemon_names):
         to_send_list.append(f"{element}, {percentage}% confidence\n")
+
+    logging.info(f"Most likely spawn: {to_send_list[0]}")
 
     # bypass Discord 2000 character limit (just in case)
     to_send = ""
