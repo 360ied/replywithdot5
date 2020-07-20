@@ -1,4 +1,6 @@
 """Shows the queue"""
+import copy
+
 import discord
 
 from utility import music
@@ -35,11 +37,12 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
     embed.set_footer(text=f"Requested by {str(message.author)}", icon_url=str(message.author.avatar_url))
     for c, i in enumerate(queue.pieces):
         i: music.Piece
-        if len(embed.copy().add_field(
+        if len(copy.deepcopy(embed).add_field(
             name=f"{c + 1}:",
             value=f"{i.embed.title} - Requested By {str(i.requester)}",
             inline=False
-        )) > 6000:
+        )) > 6000 or len(embed.fields) > 25:
+            print("OVER 6000 or over 25")
             parts.append(embed)
 
             embed = discord.Embed()
@@ -51,8 +54,11 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
             value=f"{i.embed.title} - Requested By {str(i.requester)}",
             inline=False
         )
+        print(f"{c}, {i}")
 
     parts.append(embed)
+
+    # print(parts)
 
     # Send the menu
     # noinspection PyUnresolvedReferences
