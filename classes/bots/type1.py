@@ -10,9 +10,9 @@ from classes.bot import Bot
 from tasks.on_connect import staticstatus, persistentstorageautoupdate
 from utility import blib
 from utility.menu import MenuManager
-from utility.multiinstancemanager import MultiInstanceManager
 from utility.music import MusicManager
 from utility.persistentstoragev2 import PersistentStorage
+from utility.multiinstancemanager import MultiInstanceManager
 
 
 class Type1(Bot):
@@ -32,11 +32,11 @@ class Type1(Bot):
 
             async def on_ready(self):
                 self.multi_instance_manager = MultiInstanceManager(self)
-                self.command_dict = command_dict
-                self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
 
                 await self.multi_instance_manager.checker()
 
+                self.command_dict = command_dict
+                self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
                 for i in task_dict["on_connect"]:
                     self.loop.create_task(i)
 
