@@ -37,9 +37,9 @@ class MultiInstanceManager:
         self.status_channel = self.client.get_channel(self.status_channel_id)
 
     async def am_i_only_instance(self):
-        self.status_channel = self.client.get_channel(self.status_channel_id)
-        print(self.status_channel)
-        print(type(self.status_channel))
+        # self.status_channel = self.client.get_channel(self.status_channel_id)
+        # print(self.status_channel)
+        # print(type(self.status_channel))
         latest_message = await fetch_latest_message(self.status_channel)
         latest_message_epoch = get_snowflake_epoch(latest_message.id)
 
