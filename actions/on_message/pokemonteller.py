@@ -33,7 +33,7 @@ async def run(client: discord.Client, message: discord.Message):
         return
     if not str(message.embeds[0].title).startswith("A wild po"):
         return
-    if isinstance(message.embeds[0].image, discord.Embed.Empty):
+    if message.embeds[0].image == discord.Embed.Empty:
         return
 
     search_result = await search_google_images(message.embeds[0].image.url)
