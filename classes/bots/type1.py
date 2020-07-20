@@ -12,6 +12,7 @@ from utility import blib
 from utility.menu import MenuManager
 from utility.music import MusicManager
 from utility.persistentstoragev2 import PersistentStorage
+from utility.multiinstancemanager import MultiInstanceManager
 
 
 class Type1(Bot):
@@ -27,8 +28,13 @@ class Type1(Bot):
                 self.command_dict = None
                 self.music_manager = MusicManager()
                 self.menu_manager = MenuManager()
+                self.multi_instance_manager: MultiInstanceManager
 
             async def on_connect(self):
+                self.multi_instance_manager = MultiInstanceManager(self)
+
+                await self.multi_instance_manager.checker()
+
                 self.command_dict = command_dict
                 self.persistent_storage = PersistentStorage(self.get_guild(int(environ.get("host_guild_id"))))
                 for i in task_dict["on_connect"]:
@@ -41,6 +47,9 @@ class Type1(Bot):
                     return default_prefix
 
             async def on_message(self, message):
+                if not self.multi_instance_manager.enabled:
+                    return
+
                 for i in actions_dict["on_message"]:
                     self.loop.create_task(i.run(self, message))
                 # if message.content.startswith(prefix):
@@ -90,10 +99,14 @@ class Type1(Bot):
                                 await message.channel.send(f"{type(e).__name__}: {str(e)}")
 
             async def on_raw_reaction_add(self, payload):
+                if not self.multi_instance_manager.enabled:
+                    return
                 for i in actions_dict["on_raw_reaction_add"]:
                     self.loop.create_task(i(self, payload))
 
             async def on_voice_state_update(self, member, before, after):
+                if not self.multi_instance_manager.enabled:
+                    return
                 for i in actions_dict["on_voice_state_update"]:
                     # noinspection PyArgumentList
                     self.loop.create_task(i(self, member, before, after))

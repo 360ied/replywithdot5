@@ -5,10 +5,7 @@ from io import StringIO
 
 import discord
 
-
-async def fetch_latest_message(text_channel: discord.TextChannel) -> discord.Message:
-    """Gets the latest message in a text channel"""
-    return (await text_channel.history(limit=1).flatten())[0]
+from utility.blib import fetch_latest_message
 
 
 class PersistentStorage:

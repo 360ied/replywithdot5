@@ -349,3 +349,13 @@ class WrappedTuple(tuple):
     def __getitem__(self, item):
         item = item % len(self)
         return super().__getitem__(item)
+
+
+async def fetch_latest_message(text_channel: discord.TextChannel) -> discord.Message:
+    """Gets the latest message in a text channel"""
+    return (await text_channel.history(limit=1).flatten())[0]
+
+
+def get_snowflake_epoch(snowflake: int) -> int:
+    """Returns UTC time from a Discord snowflake"""
+    return ((snowflake >> 22) + 1420070400000) // 1000
