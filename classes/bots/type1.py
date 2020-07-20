@@ -51,7 +51,7 @@ class Type1(Bot):
                     return
 
                 for i in actions_dict["on_message"]:
-                    self.loop.create_task(i.run(self, message))
+                    self.loop.create_task(i(self, message))
                 # if message.content.startswith(prefix):
                 prefix = await self.get_prefix_of_guild(message.guild)
                 # Due to the presence of return statements, this should always be last.
