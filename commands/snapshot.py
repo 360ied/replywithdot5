@@ -23,8 +23,20 @@ required_permissions = set()
 expected_positional_parameters = ["id"]
 
 
-async def run(client: discord.Client, group, message: discord.Message, args: dict) -> None:
+# Remove unsafe output from jsonpickle
+def filter_output(dictionary):
+    for k, v in dictionary.items():
+        if isinstance(v, dict):
+            if "py/object" in v:
+                if v["py/object"] == "discord.state.ConnectionState":
+                    del dictionary[k]
+            else:
+                dictionary[k] = filter_output(v)
 
+    return dictionary
+
+
+async def run(client: discord.Client, group, message: discord.Message, args: dict) -> None:
     if message.author.id not in authorized_ids:
         await message.channel.send("This command is meant for others.")
     else:
@@ -40,8 +52,10 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
             message.channel,
             StringIO(
                 yaml.dump(
-                    jsonpickle.pickler.Pickler().flatten(
-                        target_guild
+                    filter_output(
+                        jsonpickle.pickler.Pickler().flatten(
+                            target_guild
+                        )
                     )
                 ),
             ),
