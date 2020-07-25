@@ -30,7 +30,7 @@ def filter_output(dictionary):
             continue
         if isinstance(v, dict):
             if "py/object" in v:
-                print(v)
+                # print(v)
                 if v["py/object"] == "discord.state.ConnectionState":
                     del dictionary[k]
                     continue
