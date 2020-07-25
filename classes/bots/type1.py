@@ -126,7 +126,7 @@ class Type1(Bot):
         from commands import ping, setprefix, helpcommand, wolframalpha, meaning, addreactionrole, \
             musicplay, musicloop, musicskip, musicdisconnect, musicnowplaying, musicloopqueue, musicviewqueue, \
             musicremove, musicpause, musicresume, musicshuffle, \
-            ownerkill
+            ownerkill, snapshot
 
         # Sort the dictionary alphabetically by the key
         command_dict = dict(
@@ -162,7 +162,8 @@ class Type1(Bot):
                     "resume": musicresume,
                     "shuffle": musicshuffle,
                     "randomize": musicshuffle,
-                    "ow_kill": ownerkill
+                    "ow_kill": ownerkill,
+                    "snapshot": snapshot
                 }.items(), key=lambda item: item[0]))
 
         actions_dict = {

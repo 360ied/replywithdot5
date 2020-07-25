@@ -394,3 +394,37 @@ def counter_confidence_with_word_list(counter, word_list):
     return [[element, count, 100 * (count / total_count)]
             for element, count in counter.most_common()
             if element in word_list]
+
+
+primitives = int, float, str, bool
+
+
+def is_primitive(obj):
+    for type_ in primitives:
+        if isinstance(obj, type_):
+            return True
+    return False
+
+
+def deep_dict_from_object(obj):
+    dict_to_return = dict()
+
+    for attr_name in dir(obj):
+        if attr_name.startswith("_"):
+            continue
+
+        try:
+            attr_obj = getattr(obj, attr_name)
+        except AttributeError:
+            continue
+
+        if hasattr(attr_obj, "__call__"):
+            continue
+
+        if is_primitive(attr_obj):
+            dict_to_return[attr_name] = attr_obj
+            continue
+
+        dict_to_return[attr_name] = deep_dict_from_object(attr_obj)
+
+    return dict_to_return
