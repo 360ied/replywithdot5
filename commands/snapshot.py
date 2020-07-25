@@ -28,6 +28,9 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
         await message.channel.send("Guild not found!")
         return
 
+    await message.channel.send("command temporarily disabled")
+    return
+
     await upload_discord(
         message.channel,
         StringIO(
