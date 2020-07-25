@@ -404,27 +404,3 @@ def is_primitive(obj):
         if isinstance(obj, type_):
             return True
     return False
-
-
-def deep_dict_from_object(obj):
-    dict_to_return = dict()
-
-    for attr_name in dir(obj):
-        if attr_name.startswith("_"):
-            continue
-
-        try:
-            attr_obj = getattr(obj, attr_name)
-        except AttributeError:
-            continue
-
-        if hasattr(attr_obj, "__call__"):
-            continue
-
-        if is_primitive(attr_obj):
-            dict_to_return[attr_name] = attr_obj
-            continue
-
-        dict_to_return[attr_name] = deep_dict_from_object(attr_obj)
-
-    return dict_to_return

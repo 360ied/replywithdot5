@@ -1,8 +1,11 @@
 """Takes a snapshot of a guild"""
+from io import StringIO
+
 import discord
+import jsonpickle
 import yaml
 
-from utility.blib import deep_dict_from_object, upload_discord
+from utility.blib import upload_discord
 
 description = __doc__
 
@@ -27,10 +30,12 @@ async def run(client: discord.Client, group, message: discord.Message, args: dic
 
     await upload_discord(
         message.channel,
-        yaml.dump(
-            deep_dict_from_object(
-                target_guild
-            )
+        StringIO(
+            yaml.dump(
+                jsonpickle.pickler.Pickler().flatten(
+                    target_guild
+                )
+            ),
         ),
-        args["id"]
+        f"{args['id']}.yaml"
     )
