@@ -5,6 +5,7 @@ import discord
 import jsonpickle
 import yaml
 
+from commands.ownerkill import authorized_ids
 from utility.blib import upload_discord
 
 description = __doc__
@@ -23,22 +24,26 @@ expected_positional_parameters = ["id"]
 
 
 async def run(client: discord.Client, group, message: discord.Message, args: dict) -> None:
-    target_guild = client.get_guild(int(args["id"]))
-    if target_guild is None:
-        await message.channel.send("Guild not found!")
-        return
 
-    await message.channel.send("command temporarily disabled")
-    return
+    if message.author.id not in authorized_ids:
+        await message.channel.send("This command is meant for others.")
+    else:
+        target_guild = client.get_guild(int(args["id"]))
+        if target_guild is None:
+            await message.channel.send("Guild not found!")
+            return
 
-    await upload_discord(
-        message.channel,
-        StringIO(
-            yaml.dump(
-                jsonpickle.pickler.Pickler().flatten(
-                    target_guild
-                )
+        # await message.channel.send("command temporarily disabled")
+        # return
+
+        await upload_discord(
+            message.channel,
+            StringIO(
+                yaml.dump(
+                    jsonpickle.pickler.Pickler().flatten(
+                        target_guild
+                    )
+                ),
             ),
-        ),
-        f"{args['id']}.yaml"
-    )
+            f"{args['id']}.yaml"
+        )
