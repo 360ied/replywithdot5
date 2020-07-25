@@ -25,13 +25,16 @@ expected_positional_parameters = ["id"]
 
 # Remove unsafe output from jsonpickle
 def filter_output(dictionary):
-    for k, v in dictionary.items():
+    for k, v in dictionary.copy().items():
+        if k not in dictionary:
+            continue
         if isinstance(v, dict):
             if "py/object" in v:
+                print(v)
                 if v["py/object"] == "discord.state.ConnectionState":
                     del dictionary[k]
-            else:
-                dictionary[k] = filter_output(v)
+                    continue
+            dictionary[k] = filter_output(v)
 
     return dictionary
 
